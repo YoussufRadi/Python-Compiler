@@ -1,0 +1,224 @@
+import java.util.*;
+import java.io.*;
+
+/* semantic value of token returned by scanner */
+
+public class lexer
+{
+	BufferedReader reader;
+	Yylex yy;
+	public lexer(String filein) throws FileNotFoundException 
+	{
+		reader = new BufferedReader(new FileReader(filein));
+		yy = new Yylex (reader);
+		
+	}
+	public String getNextToken(String filein) throws IOException
+	{
+		
+		
+		return yy.next_token();
+	}
+	public static void main (String[] args) throws IOException
+	{
+		BufferedReader reader = new BufferedReader(new FileReader("ms1.py"));
+		BufferedWriter writer = new BufferedWriter(new FileWriter("testout.txt"));
+		Yylex yy = new Yylex (reader);
+		while(true)
+		{
+			String x =yy.next_token();
+			if(x==null)
+				break;
+			writer.write(x);	
+			writer.write('\n');
+		}
+		reader.close();
+		writer.close();
+	}
+}
+%%
+%function next_token
+%type String
+
+%eofval{
+  return null;
+%eofval}
+
+PRINT=print
+FROM=from
+IF=if
+ELSE=else
+TRY=try
+EXCEPT=excpet
+CONTINUE=continue
+OR=or
+NOT=not
+AND=and
+TRUE=[T|t]rue
+FALSE=[F|f]alse
+IN=in
+RANGE=range
+DEF=def
+LOOP=while|for
+KEYWORD=str|int
+IMPORT=import
+CLASS=class
+ALPHA=[A-Za-z]
+DIGIT=[0-9]
+ALPHA_NUMERIC={ALPHA}|{DIGIT}
+NUMBER={DIGIT}+("."{DIGIT}+)(E[+-]?{DIGIT}+)?
+INTEGER = {DIGIT}+
+WHITE_SPACE=([\ \n\r\t\f\b])+
+NOSLASHQUOTE = [^\"]
+NOSLASHSINGLE = [^\']
+SINGLECOMMENT = #[^\n]* \n
+MULTIPLECOMMENT = \"\"\"(.|{WHITE_SPACE})*\"\"\"
+COMMENTS = {SINGLECOMMENT}|{MULTIPLECOMMENT}
+STRINGDOUBLE = \"{NOSLASHQUOTE}*\"
+STRINGSINGLE = \'{NOSLASHSINGLE}*\'
+STRING = {STRINGDOUBLE}|{STRINGSINGLE}
+ID = {ALPHA}({ALPHA}|{DIGIT})*
+PACKAGE = (_+{ID}_+)
+FUNCTION = {ID}_{ID}
+
+
+%%
+
+<YYINITIAL> {WHITE_SPACE} { }
+<YYINITIAL> {COMMENTS} { }
+<YYINITIAL> {KEYWORD} { 
+  return "KW\t"+yytext(); 
+}
+<YYINITIAL> {LOOP} { 
+  return "LP\t"+yytext(); 
+}
+<YYINITIAL> {IMPORT} { 
+  return "IM\t"+yytext(); 
+}
+<YYINITIAL> {PACKAGE} { 
+  return "PK\t"+yytext(); 
+}
+<YYINITIAL> {FUNCTION} { 
+  return "FC\t"+yytext(); 
+}
+<YYINITIAL> {PRINT} { 
+  return "PR\t"+yytext(); 
+}
+<YYINITIAL> {FROM} { 
+  return "FR\t"+yytext(); 
+}
+<YYINITIAL> {IF} { 
+  return "IF\t"+yytext(); 
+}
+<YYINITIAL> {ELSE} { 
+  return "EI\t"+yytext(); 
+}
+<YYINITIAL> {TRY} { 
+  return "TY\t"+yytext(); 
+}
+<YYINITIAL> {EXCEPT} { 
+  return "EX\t"+yytext(); 
+}
+<YYINITIAL> {CONTINUE} { 
+  return "CN\t"+yytext(); 
+}
+<YYINITIAL> {OR} { 
+  return "OR\t"+yytext(); 
+}
+<YYINITIAL> {NOT} { 
+  return "NT\t"+yytext(); 
+}
+<YYINITIAL> {AND} { 
+  return "AD\t"+yytext(); 
+}
+<YYINITIAL> {TRUE} { 
+  return "TR\t"+yytext(); 
+}
+<YYINITIAL> {FALSE} { 
+  return "FL\t"+yytext(); 
+}
+<YYINITIAL> {IN} { 
+  return "IN\t"+yytext(); 
+}
+<YYINITIAL> {RANGE} { 
+  return "RG\t"+yytext(); 
+}
+<YYINITIAL> {DEF} { 
+  return "DF\t"+yytext(); 
+}
+<YYINITIAL> {CLASS} { 
+  return "CL\t"+yytext(); 
+}
+<YYINITIAL> {ID} { 
+  return "ID\t"+yytext(); 
+}
+<YYINITIAL> {NUMBER} { 
+  return "DL\t"+yytext(); 
+}
+<YYINITIAL> {INTEGER} { 
+  return "IN\t"+yytext(); 
+}
+<YYINITIAL> {STRING} { 
+  return "ST\t"+yytext(); 
+}
+<YYINITIAL> "." { 
+  return "DO\t."; 
+}
+<YYINITIAL> "+" { 
+  return "PO\t+"; 
+}
+<YYINITIAL> "-" { 
+  return "MO\t-"; 
+}
+<YYINITIAL> "*" { 
+  return "MB\t*"; 
+}
+<YYINITIAL> "/" { 
+  return "DB\t/"; 
+}
+<YYINITIAL> "=" { 
+  return "AO\t="; 
+}
+<YYINITIAL> "<" { 
+  return "LT\t<";  
+}
+<YYINITIAL> ">" { 
+  return "GT\t>"; 
+}
+<YYINITIAL> "==" { 
+  return "EQ\t=="; 
+}
+<YYINITIAL> "{" { 
+  return "LC\t{"; 
+}
+<YYINITIAL> "}" { 
+  return "RC\t}"; 
+}
+<YYINITIAL> "(" { 
+  return "LB\t("; 
+}
+<YYINITIAL> ")" { 
+  return "RB\t)"; 
+}
+<YYINITIAL> ";" { 
+  return "SM\t;"; 
+}
+<YYINITIAL> "," { 
+  return "FA\t,"; 
+}
+
+<YYINITIAL> "[]" { 
+  return "AA\t[]"; 
+}
+<YYINITIAL> "[" { 
+  return "LS\t["; 
+}
+<YYINITIAL> "]" { 
+  return "RS\t]"; 
+}
+<YYINITIAL> ":" { 
+  return "SC\t]"; 
+}
+<YYINITIAL> . { 
+  return "Undefined\t"+yytext(); 
+}
