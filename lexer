@@ -79,7 +79,7 @@ STRINGSINGLE = \'{NOSLASHSINGLE}*\'
 STRING = {STRINGDOUBLE}|{STRINGSINGLE}
 ID = {ALPHA}({ALPHA}|{DIGIT})*
 PACKAGE = (_+{ID}_+)
-FUNCTION = {ID}_{ID}
+FUNCTION = {ID}(_{ID})*
 
 
 %%
@@ -97,9 +97,6 @@ FUNCTION = {ID}_{ID}
 }
 <YYINITIAL> {PACKAGE} { 
   return "PK\t"+yytext(); 
-}
-<YYINITIAL> {FUNCTION} { 
-  return "FC\t"+yytext(); 
 }
 <YYINITIAL> {PRINT} { 
   return "PR\t"+yytext(); 
@@ -218,6 +215,9 @@ FUNCTION = {ID}_{ID}
 }
 <YYINITIAL> ":" { 
   return "SC\t]"; 
+}
+<YYINITIAL> {FUNCTION} { 
+  return "FC\t"+yytext(); 
 }
 <YYINITIAL> . { 
   return "Undefined\t"+yytext(); 
