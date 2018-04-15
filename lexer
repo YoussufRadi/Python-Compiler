@@ -44,6 +44,10 @@ public class lexer
   return null;
 %eofval}
 
+%{
+int indentCount = 0;
+%}
+
 FINALLY=finally
 NONE=none
 LAMBDA=lambda
@@ -78,6 +82,7 @@ DIGIT=[0-9]
 ALPHA_NUMERIC={ALPHA}|{DIGIT}
 NUMBER={DIGIT}+("."{DIGIT}+)(E[+-]?{DIGIT}+)?
 INTEGER = {DIGIT}+
+INDENT=(\ \ \ \ )
 WHITE_SPACE=([\ \n\r\t\f\b])+
 NOSLASHQUOTE = [^\"]
 NOSLASHSINGLE = [^\']
@@ -93,7 +98,9 @@ FUNCTION = {ID}_{ID}
 
 
 %%
-
+<YYINITIAL> {INDENT} { 
+  return "IND\t"+yytext();
+}
 <YYINITIAL> {WHITE_SPACE} { }
 <YYINITIAL> {COMMENTS} { }
 <YYINITIAL> {KEYWORD} { 
