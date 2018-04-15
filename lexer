@@ -44,13 +44,23 @@ public class lexer
   return null;
 %eofval}
 
+FINALLY=finally
+NONE=none
+LAMBDA=lambda
+GLOBAL=global
+IS=is
+RETURN=return
+YIELD=yield
+PASS=pass
 PRINT=print
 FROM=from
 IF=if
 ELSE=else
+ELIF=elif
 TRY=try
 EXCEPT=excpet
 CONTINUE=continue
+BREAK=break
 OR=or
 NOT=not
 AND=and
@@ -160,6 +170,39 @@ FUNCTION = {ID}_{ID}
 }
 <YYINITIAL> {STRING} { 
   return "ST\t"+yytext(); 
+}
+<YYINITIAL> {FINALLY} { 
+  return "FI\t"+yytext(); 
+}
+<YYINITIAL> {NONE} { 
+  return "NN\t"+yytext(); 
+}
+<YYINITIAL> {LAMBDA} { 
+  return "LM\t"+yytext(); 
+}
+<YYINITIAL> {GLOBAL} { 
+  return "GL\t"+yytext(); 
+}
+<YYINITIAL> {IS} { 
+  return "IS\t"+yytext(); 
+}
+<YYINITIAL> {RETURN} { 
+  return "RT\t"+yytext(); 
+}
+<YYINITIAL> {YIELD} { 
+  return "YD\t"+yytext(); 
+}
+<YYINITIAL> {PASS} { 
+  return "PS\t"+yytext(); 
+}
+<YYINITIAL> {RETURN} { 
+  return "RT\t"+yytext(); 
+}
+<YYINITIAL> {ELIF} { 
+  return "ELF\t"+yytext(); 
+}
+<YYINITIAL> {BREAK} { 
+  return "BR\t"+yytext(); 
 }
 <YYINITIAL> "." { 
   return "DO\t."; 
