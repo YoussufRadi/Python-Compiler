@@ -15,6 +15,7 @@ FA	,
 IN	9
 RB	)
 SC	]
+IND lvl:1
 ID	choices
 DO	.
 ID	append
@@ -37,10 +38,12 @@ ID	printBoard
 LB	(
 RB	)
 SC	]
+IND lvl:1
 PR	print
 LB	(
 ST	'\n -----'
 RB	)
+IND lvl:1
 PR	print
 LB	(
 ST	'|'
@@ -66,10 +69,12 @@ RS	]
 PO	+
 ST	'|'
 RB	)
+IND lvl:1
 PR	print
 LB	(
 ST	' -----'
 RB	)
+IND lvl:1
 PR	print
 LB	(
 ST	'|'
@@ -95,10 +100,12 @@ RS	]
 PO	+
 ST	'|'
 RB	)
+IND lvl:1
 PR	print
 LB	(
 ST	' -----'
 RB	)
+IND lvl:1
 PR	print
 LB	(
 ST	'|'
@@ -124,6 +131,7 @@ RS	]
 PO	+
 ST	'|'
 RB	)
+IND lvl:1
 PR	print
 LB	(
 ST	' -----\n'
@@ -132,24 +140,34 @@ LP	while
 NT	not
 ID	winner
 SC	]
+IND lvl:1
 ID	printBoard
 LB	(
 RB	)
+IND lvl:1
 IF	if
 ID	playerOneTurn
 SC	]
+IND lvl:1
+IND lvl:2
 PR	print
 LB	(
 ST	"Player 1:"
 RB	)
+IND lvl:1
 EI	else
 SC	]
+IND lvl:1
+IND lvl:2
 PR	print
 LB	(
 ST	"Player 2:"
 RB	)
+IND lvl:1
 TY	try
 SC	]
+IND lvl:1
+IND lvl:2
 ID	choice
 AO	=
 KW	int
@@ -159,13 +177,19 @@ LB	(
 ST	">> "
 RB	)
 RB	)
+IND lvl:1
 ID	except
 SC	]
+IND lvl:1
+IND lvl:2
 PR	print
 LB	(
 ST	"please enter a valid field"
 RB	)
+IND lvl:1
+IND lvl:2
 CN	continue
+IND lvl:1
 IF	if
 ID	choices
 LS	[
@@ -185,14 +209,21 @@ RS	]
 EQ	==
 ST	'O'
 SC	]
+IND lvl:1
+IND lvl:2
 PR	print
 LB	(
 ST	"illegal move, plase try again"
 RB	)
+IND lvl:1
+IND lvl:2
 CN	continue
+IND lvl:1
 IF	if
 ID	playerOneTurn
 SC	]
+IND lvl:1
+IND lvl:2
 ID	choices
 LS	[
 ID	choice
@@ -201,8 +232,11 @@ IN	1
 RS	]
 AO	=
 ST	'X'
+IND lvl:1
 EI	else
 SC	]
+IND lvl:1
+IND lvl:2
 ID	choices
 LS	[
 ID	choice
@@ -211,10 +245,12 @@ IN	1
 RS	]
 AO	=
 ST	'O'
+IND lvl:1
 ID	playerOneTurn
 AO	=
 NT	not
 ID	playerOneTurn
+IND lvl:1
 LP	for
 ID	x
 IN	in
@@ -225,11 +261,15 @@ FA	,
 IN	3
 RB	)
 SC	]
+IND lvl:1
+IND lvl:2
 ID	y
 AO	=
 ID	x
 MB	*
 IN	3
+IND lvl:1
+IND lvl:2
 IF	if
 LB	(
 ID	choices
@@ -261,12 +301,20 @@ RB	)
 RS	]
 RB	)
 SC	]
+IND lvl:1
+IND lvl:2
+IND lvl:3
 ID	winner
 AO	=
 TR	True
+IND lvl:1
+IND lvl:2
+IND lvl:3
 ID	printBoard
 LB	(
 RB	)
+IND lvl:1
+IND lvl:2
 IF	if
 LB	(
 ID	choices
@@ -298,12 +346,19 @@ RB	)
 RS	]
 RB	)
 SC	]
+IND lvl:1
+IND lvl:2
+IND lvl:3
 ID	winner
 AO	=
 TR	True
+IND lvl:1
+IND lvl:2
+IND lvl:3
 ID	printBoard
 LB	(
 RB	)
+IND lvl:1
 IF	if
 LB	(
 LB	(
@@ -328,6 +383,8 @@ IN	8
 RS	]
 RB	)
 OR	or
+IND lvl:1
+IND lvl:2
 LB	(
 ID	choices
 LS	[
@@ -351,9 +408,13 @@ RS	]
 RB	)
 RB	)
 SC	]
+IND lvl:1
+IND lvl:2
 ID	winner
 AO	=
 TR	True
+IND lvl:1
+IND lvl:2
 ID	printBoard
 LB	(
 RB	)
