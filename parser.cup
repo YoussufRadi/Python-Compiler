@@ -1,0 +1,26 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+
+
+/* Terminals (tokens returned by the scanner). */
+terminal			terminal			INT, IND, KW, LP, IM, PK, FC, PR, FR, IF, EI, TY, EX, CN, OR, NT, AD, TR, FL, RG, DF, CL, ID, DL, IN, ST, FI, NN, LM, GL, IS, YD, PS, RT, ELF, BR, DO, PO, MO, MB, DB, AO, LT, GT, EQ, LC, RC, LB, RB, SM, FA, AA, LS, RS, SC, UD;
+
+
+/* Non-terminals */
+nonterminal	Boolean		program, statement, import_stmnt;
+
+/* The grammar */
+
+
+program ::= program:p statement:e
+			{:RESULT = p && e;:}
+			| {:RESULT = true;:};
+
+statement ::= import_stmnt:s
+			  {:RESULT = s;:};
+
+import_stmnt ::= FR PK IM FC
+				{:RESULT = true;:}
+				| error
+				{:RESULT = false;:};

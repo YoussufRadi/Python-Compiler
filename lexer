@@ -1,47 +1,12 @@
-import java.util.*;
-import java.io.*;
-
-/* semantic value of token returned by scanner */
-
-public class lexer
-{
-	BufferedReader reader;
-	Yylex yy;
-	public lexer(String filein) throws FileNotFoundException 
-	{
-		reader = new BufferedReader(new FileReader(filein));
-		yy = new Yylex (reader);
-		
-	}
-	public String getNextToken(String filein) throws IOException
-	{
-		
-		
-		return yy.next_token();
-	}
-	public static void main (String[] args) throws IOException
-	{
-		BufferedReader reader = new BufferedReader(new FileReader("ms1.py"));
-		BufferedWriter writer = new BufferedWriter(new FileWriter("testout.txt"));
-		Yylex yy = new Yylex (reader);
-		while(true)
-		{
-			String x =yy.next_token();
-			if(x==null)
-				break;
-			writer.write(x);	
-			writer.write('\n');
-		}
-		reader.close();
-		writer.close();
-	}
-}
+import java_cup.runtime.Symbol;
 %%
+%class Lexer
+%implements java_cup.runtime.Scanner
 %function next_token
-%type String
+%type java_cup.runtime.Symbol
 
 %eofval{
-  return null;
+  return new Symbol(sym.EOF, null);
 %eofval}
 
 %{
@@ -98,233 +63,229 @@ FUNCTION = {ID}_{ID}
 
 
 %%
-<YYINITIAL> {INDENT} { 
-  return "IND lvl:"+indentCount++;
+<YYINITIAL> {INDENT} {
+  return new Symbol(sym.IND, indentCount++); 
 }
 <YYINITIAL> {WHITE_SPACE} { indentCount = 1; }
 <YYINITIAL> {COMMENTS} { indentCount = 1; }
 <YYINITIAL> {KEYWORD} {
   indentCount = 1; 
-  return "KW\t"+yytext(); 
+  return new Symbol(sym.KW, yytext()); 
 }
 <YYINITIAL> {LOOP} { 
   indentCount = 1;
-  return "LP\t"+yytext(); 
+  return new Symbol(sym.LP, yytext()); 
 }
 <YYINITIAL> {IMPORT} {
   indentCount = 1; 
-  return "IM\t"+yytext(); 
+  return new Symbol(sym.IM, yytext()); 
 }
 <YYINITIAL> {PACKAGE} {
   indentCount = 1; 
-  return "PK\t"+yytext(); 
+  return new Symbol(sym.PK, yytext()); 
 }
 <YYINITIAL> {FUNCTION} {
   indentCount = 1; 
-  return "FC\t"+yytext(); 
+  return new Symbol(sym.FC, yytext()); 
 }
 <YYINITIAL> {PRINT} {
   indentCount = 1; 
-  return "PR\t"+yytext(); 
+  return new Symbol(sym.PR, yytext()); 
 }
 <YYINITIAL> {FROM} {
   indentCount = 1; 
-  return "FR\t"+yytext(); 
+  return new Symbol(sym.FR, yytext()); 
 }
 <YYINITIAL> {IF} {
   indentCount = 1; 
-  return "IF\t"+yytext(); 
+  return new Symbol(sym.IF, yytext()); 
 }
 <YYINITIAL> {ELSE} {
   indentCount = 1; 
-  return "EI\t"+yytext(); 
+  return new Symbol(sym.EI, yytext()); 
 }
 <YYINITIAL> {TRY} {
   indentCount = 1; 
-  return "TY\t"+yytext(); 
+  return new Symbol(sym.TY, yytext());
 }
 <YYINITIAL> {EXCEPT} {
   indentCount = 1;  
-  return "EX\t"+yytext(); 
+  return new Symbol(sym.EX, yytext()); 
 }
 <YYINITIAL> {CONTINUE} {
   indentCount = 1;  
-  return "CN\t"+yytext(); 
+  return new Symbol(sym.CN, yytext()); 
 }
 <YYINITIAL> {OR} {
   indentCount = 1;  
-  return "OR\t"+yytext(); 
+  return new Symbol(sym.OR, yytext()); 
 }
 <YYINITIAL> {NOT} {
   indentCount = 1;  
-  return "NT\t"+yytext(); 
+  return new Symbol(sym.NT, yytext()); 
 }
 <YYINITIAL> {AND} {
   indentCount = 1;  
-  return "AD\t"+yytext(); 
+  return new Symbol(sym.AD, yytext()); 
 }
 <YYINITIAL> {TRUE} {
   indentCount = 1;  
-  return "TR\t"+yytext(); 
+  return new Symbol(sym.TR, yytext()); 
 }
 <YYINITIAL> {FALSE} {
   indentCount = 1;  
-  return "FL\t"+yytext(); 
+  return new Symbol(sym.FL, yytext()); 
 }
 <YYINITIAL> {IN} {
   indentCount = 1;  
-  return "IN\t"+yytext(); 
+  return new Symbol(sym.IN, yytext()); 
 }
 <YYINITIAL> {RANGE} {
   indentCount = 1;  
-  return "RG\t"+yytext(); 
+  return new Symbol(sym.RG, yytext()); 
 }
 <YYINITIAL> {DEF} {
   indentCount = 1;  
-  return "DF\t"+yytext(); 
+  return new Symbol(sym.DF, yytext()); 
 }
 <YYINITIAL> {CLASS} {
   indentCount = 1;  
-  return "CL\t"+yytext(); 
+  return new Symbol(sym.CL, yytext()); 
 }
 <YYINITIAL> {ID} {
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 <YYINITIAL> {NUMBER} {
   indentCount = 1;  
-  return "DL\t"+yytext(); 
+  return new Symbol(sym.DL, yytext()); 
 }
 <YYINITIAL> {INTEGER} {
   indentCount = 1;  
-  return "IN\t"+yytext(); 
+  return new Symbol(sym.INT, yytext()); 
 }
 <YYINITIAL> {STRING} { 
   indentCount = 1; 
-  return "ST\t"+yytext(); 
+  return new Symbol(sym.ST, yytext()); 
 }
 <YYINITIAL> {FINALLY} {
   indentCount = 1;  
-  return "FI\t"+yytext(); 
+  return new Symbol(sym.FI, yytext()); 
 }
 <YYINITIAL> {NONE} { 
   indentCount = 1; 
-  return "NN\t"+yytext(); 
+  return new Symbol(sym.NN, yytext()); 
 }
 <YYINITIAL> {LAMBDA} {
   indentCount = 1;  
-  return "LM\t"+yytext(); 
+  return new Symbol(sym.LM, yytext()); 
 }
 <YYINITIAL> {GLOBAL} { 
   indentCount = 1; 
-  return "GL\t"+yytext(); 
+  return new Symbol(sym.GL, yytext()); 
 }
 <YYINITIAL> {IS} { 
   indentCount = 1; 
-  return "IS\t"+yytext(); 
+  return new Symbol(sym.IS, yytext());  
 }
 <YYINITIAL> {RETURN} {
   indentCount = 1;  
-  return "RT\t"+yytext(); 
+  return new Symbol(sym.RT, yytext()); 
 }
 <YYINITIAL> {YIELD} { 
   indentCount = 1; 
-  return "YD\t"+yytext(); 
+  return new Symbol(sym.YD, yytext()); 
 }
 <YYINITIAL> {PASS} { 
   indentCount = 1; 
-  return "PS\t"+yytext(); 
-}
-<YYINITIAL> {RETURN} { 
-  indentCount = 1; 
-  return "RT\t"+yytext(); 
+  return new Symbol(sym.PS, yytext()); 
 }
 <YYINITIAL> {ELIF} { 
   indentCount = 1; 
-  return "ELF\t"+yytext(); 
+  return new Symbol(sym.ELF, yytext()); 
 }
 <YYINITIAL> {BREAK} { 
   indentCount = 1; 
-  return "BR\t"+yytext(); 
+  return new Symbol(sym.BR, yytext());  
 }
 <YYINITIAL> "." { 
   indentCount = 1; 
-  return "DO\t."; 
+  return new Symbol(sym.DO, yytext()); 
 }
 <YYINITIAL> "+" { 
   indentCount = 1; 
-  return "PO\t+"; 
+  return new Symbol(sym.PO, yytext()); 
 }
 <YYINITIAL> "-" { 
   indentCount = 1; 
-  return "MO\t-"; 
+  return new Symbol(sym.MO, yytext()); 
 }
 <YYINITIAL> "*" { 
   indentCount = 1; 
-  return "MB\t*"; 
+  return new Symbol(sym.MB, yytext()); 
 }
 <YYINITIAL> "/" { 
   indentCount = 1; 
-  return "DB\t/"; 
+  return new Symbol(sym.DB, yytext()); 
 }
 <YYINITIAL> "=" { 
   indentCount = 1; 
-  return "AO\t="; 
+  return new Symbol(sym.AO, yytext()); 
 }
 <YYINITIAL> "<" { 
   indentCount = 1; 
-  return "LT\t<";  
+  return new Symbol(sym.LT, yytext()); 
 }
 <YYINITIAL> ">" { 
   indentCount = 1; 
-  return "GT\t>"; 
+  return new Symbol(sym.GT, yytext()); 
 }
 <YYINITIAL> "==" { 
   indentCount = 1; 
-  return "EQ\t=="; 
+  return new Symbol(sym.EQ, yytext()); 
 }
 <YYINITIAL> "{" { 
   indentCount = 1; 
-  return "LC\t{"; 
+  return new Symbol(sym.LC, yytext()); 
 }
 <YYINITIAL> "}" { 
   indentCount = 1; 
-  return "RC\t}"; 
+  return new Symbol(sym.RC, yytext()); 
 }
 <YYINITIAL> "(" { 
   indentCount = 1; 
-  return "LB\t("; 
+  return new Symbol(sym.LB, yytext()); 
 }
 <YYINITIAL> ")" { 
   indentCount = 1; 
-  return "RB\t)"; 
+  return new Symbol(sym.RB, yytext()); 
 }
 <YYINITIAL> ";" { 
   indentCount = 1; 
-  return "SM\t;"; 
+  return new Symbol(sym.SM, yytext()); 
 }
 <YYINITIAL> "," { 
   indentCount = 1; 
-  return "FA\t,"; 
+  return new Symbol(sym.FA, yytext()); 
 }
 
 <YYINITIAL> "[]" { 
   indentCount = 1; 
-  return "AA\t[]"; 
+  return new Symbol(sym.AA, yytext()); 
 }
 <YYINITIAL> "[" { 
   indentCount = 1; 
-  return "LS\t["; 
+  return new Symbol(sym.LS, yytext()); 
 }
 <YYINITIAL> "]" { 
   indentCount = 1; 
-  return "RS\t]"; 
+  return new Symbol(sym.RS, yytext()); 
 }
 <YYINITIAL> ":" { 
   indentCount = 1; 
-  return "SC\t]"; 
+  return new Symbol(sym.SC, yytext()); 
 }
 <YYINITIAL> . { 
   indentCount = 1; 
-  return "Undefined\t"+yytext(); 
+  return new Symbol(sym.UD, yytext()); 
 }

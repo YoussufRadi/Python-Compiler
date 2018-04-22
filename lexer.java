@@ -1,39 +1,7 @@
-import java.util.*;
-import java.io.*;
-/* semantic value of token returned by scanner */
-public class lexer
-{
-	BufferedReader reader;
-	Yylex yy;
-	public lexer(String filein) throws FileNotFoundException 
-	{
-		reader = new BufferedReader(new FileReader(filein));
-		yy = new Yylex (reader);
-	}
-	public String getNextToken(String filein) throws IOException
-	{
-		return yy.next_token();
-	}
-	public static void main (String[] args) throws IOException
-	{
-		BufferedReader reader = new BufferedReader(new FileReader("ms1.py"));
-		BufferedWriter writer = new BufferedWriter(new FileWriter("testout.txt"));
-		Yylex yy = new Yylex (reader);
-		while(true)
-		{
-			String x =yy.next_token();
-			if(x==null)
-				break;
-			writer.write(x);	
-			writer.write('\n');
-		}
-		reader.close();
-		writer.close();
-	}
-}
+import java_cup.runtime.Symbol;
 
 
-class Yylex {
+class Lexer implements java_cup.runtime.Scanner {
 	private final int YY_BUFFER_SIZE = 512;
 	private final int YY_F = -1;
 	private final int YY_NO_STATE = -1;
@@ -54,7 +22,7 @@ int indentCount = 1;
 	private boolean yy_at_bol;
 	private int yy_lexical_state;
 
-	Yylex (java.io.Reader reader) {
+	Lexer (java.io.Reader reader) {
 		this ();
 		if (null == reader) {
 			throw (new Error("Error: Bad input stream initializer."));
@@ -62,7 +30,7 @@ int indentCount = 1;
 		yy_reader = new java.io.BufferedReader(reader);
 	}
 
-	Yylex (java.io.InputStream instream) {
+	Lexer (java.io.InputStream instream) {
 		this ();
 		if (null == instream) {
 			throw (new Error("Error: Bad input stream initializer."));
@@ -70,7 +38,7 @@ int indentCount = 1;
 		yy_reader = new java.io.BufferedReader(new java.io.InputStreamReader(instream));
 	}
 
-	private Yylex () {
+	private Lexer () {
 		yy_buffer = new char[YY_BUFFER_SIZE];
 		yy_buffer_read = 0;
 		yy_buffer_index = 0;
@@ -489,7 +457,7 @@ int indentCount = 1;
 "50,-1:2,150:2,-1:22,150:7,136,150:5,58,150,66,150:7,-1,150:2,-1,150,-1:2,15" +
 "0:2,-1:22,150:2,139,150:10,58,150,66,150:7,-1,150:2,-1,150,-1:2,150:2,-1:15");
 
-	public String next_token ()
+	public java_cup.runtime.Symbol next_token ()
 		throws java.io.IOException {
 		int yy_lookahead;
 		int yy_anchor = YY_NO_ANCHOR;
@@ -512,7 +480,7 @@ int indentCount = 1;
 			yy_next_state = yy_nxt[yy_rmap[yy_state]][yy_cmap[yy_lookahead]];
 			if (YY_EOF == yy_lookahead && true == yy_initial) {
 
-  return null;
+  return new Symbol(sym.EOF, null);
 			}
 			if (YY_F != yy_next_state) {
 				yy_state = yy_next_state;
@@ -539,8 +507,8 @@ int indentCount = 1;
 					case -2:
 						break;
 					case 2:
-						{ 
-  return "IND lvl:"+indentCount++;
+						{
+  return new Symbol(sym.IND, indentCount++); 
 }
 					case -3:
 						break;
@@ -555,315 +523,315 @@ int indentCount = 1;
 					case 5:
 						{ 
   indentCount = 1; 
-  return "Undefined\t"+yytext(); 
+  return new Symbol(sym.UD, yytext()); 
 }
 					case -6:
 						break;
 					case 6:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -7:
 						break;
 					case 7:
 						{
   indentCount = 1;  
-  return "IN\t"+yytext(); 
+  return new Symbol(sym.INT, yytext()); 
 }
 					case -8:
 						break;
 					case 8:
 						{ 
   indentCount = 1; 
-  return "DO\t."; 
+  return new Symbol(sym.DO, yytext()); 
 }
 					case -9:
 						break;
 					case 9:
 						{ 
   indentCount = 1; 
-  return "MO\t-"; 
+  return new Symbol(sym.MO, yytext()); 
 }
 					case -10:
 						break;
 					case 10:
 						{ 
   indentCount = 1; 
-  return "PO\t+"; 
+  return new Symbol(sym.PO, yytext()); 
 }
 					case -11:
 						break;
 					case 11:
 						{ 
   indentCount = 1; 
-  return "MB\t*"; 
+  return new Symbol(sym.MB, yytext()); 
 }
 					case -12:
 						break;
 					case 12:
 						{ 
   indentCount = 1; 
-  return "DB\t/"; 
+  return new Symbol(sym.DB, yytext()); 
 }
 					case -13:
 						break;
 					case 13:
 						{ 
   indentCount = 1; 
-  return "AO\t="; 
+  return new Symbol(sym.AO, yytext()); 
 }
 					case -14:
 						break;
 					case 14:
 						{ 
   indentCount = 1; 
-  return "LT\t<";  
+  return new Symbol(sym.LT, yytext()); 
 }
 					case -15:
 						break;
 					case 15:
 						{ 
   indentCount = 1; 
-  return "GT\t>"; 
+  return new Symbol(sym.GT, yytext()); 
 }
 					case -16:
 						break;
 					case 16:
 						{ 
   indentCount = 1; 
-  return "LC\t{"; 
+  return new Symbol(sym.LC, yytext()); 
 }
 					case -17:
 						break;
 					case 17:
 						{ 
   indentCount = 1; 
-  return "RC\t}"; 
+  return new Symbol(sym.RC, yytext()); 
 }
 					case -18:
 						break;
 					case 18:
 						{ 
   indentCount = 1; 
-  return "LB\t("; 
+  return new Symbol(sym.LB, yytext()); 
 }
 					case -19:
 						break;
 					case 19:
 						{ 
   indentCount = 1; 
-  return "RB\t)"; 
+  return new Symbol(sym.RB, yytext()); 
 }
 					case -20:
 						break;
 					case 20:
 						{ 
   indentCount = 1; 
-  return "SM\t;"; 
+  return new Symbol(sym.SM, yytext()); 
 }
 					case -21:
 						break;
 					case 21:
 						{ 
   indentCount = 1; 
-  return "FA\t,"; 
+  return new Symbol(sym.FA, yytext()); 
 }
 					case -22:
 						break;
 					case 22:
 						{ 
   indentCount = 1; 
-  return "LS\t["; 
+  return new Symbol(sym.LS, yytext()); 
 }
 					case -23:
 						break;
 					case 23:
 						{ 
   indentCount = 1; 
-  return "RS\t]"; 
+  return new Symbol(sym.RS, yytext()); 
 }
 					case -24:
 						break;
 					case 24:
 						{ 
   indentCount = 1; 
-  return "SC\t]"; 
+  return new Symbol(sym.SC, yytext()); 
 }
 					case -25:
 						break;
 					case 25:
 						{ 
   indentCount = 1; 
-  return "ST\t"+yytext(); 
+  return new Symbol(sym.ST, yytext()); 
 }
 					case -26:
 						break;
 					case 26:
 						{
   indentCount = 1;  
-  return "IN\t"+yytext(); 
+  return new Symbol(sym.IN, yytext()); 
 }
 					case -27:
 						break;
 					case 27:
 						{
   indentCount = 1; 
-  return "IF\t"+yytext(); 
+  return new Symbol(sym.IF, yytext()); 
 }
 					case -28:
 						break;
 					case 28:
 						{
   indentCount = 1;  
-  return "OR\t"+yytext(); 
+  return new Symbol(sym.OR, yytext()); 
 }
 					case -29:
 						break;
 					case 29:
 						{ 
   indentCount = 1; 
-  return "EQ\t=="; 
+  return new Symbol(sym.EQ, yytext()); 
 }
 					case -30:
 						break;
 					case 30:
 						{ 
   indentCount = 1; 
-  return "AA\t[]"; 
+  return new Symbol(sym.AA, yytext()); 
 }
 					case -31:
 						break;
 					case 31:
 						{
   indentCount = 1; 
-  return "KW\t"+yytext(); 
+  return new Symbol(sym.KW, yytext()); 
 }
 					case -32:
 						break;
 					case 32:
 						{
   indentCount = 1; 
-  return "FC\t"+yytext(); 
+  return new Symbol(sym.FC, yytext()); 
 }
 					case -33:
 						break;
 					case 33:
 						{
   indentCount = 1; 
-  return "TY\t"+yytext(); 
+  return new Symbol(sym.TY, yytext());
 }
 					case -34:
 						break;
 					case 34:
 						{
   indentCount = 1;  
-  return "NT\t"+yytext(); 
+  return new Symbol(sym.NT, yytext()); 
 }
 					case -35:
 						break;
 					case 35:
 						{ 
   indentCount = 1;
-  return "LP\t"+yytext(); 
+  return new Symbol(sym.LP, yytext()); 
 }
 					case -36:
 						break;
 					case 36:
 						{
   indentCount = 1; 
-  return "PK\t"+yytext(); 
+  return new Symbol(sym.PK, yytext()); 
 }
 					case -37:
 						break;
 					case 37:
 						{
   indentCount = 1;  
-  return "DL\t"+yytext(); 
+  return new Symbol(sym.DL, yytext()); 
 }
 					case -38:
 						break;
 					case 38:
 						{
   indentCount = 1;  
-  return "AD\t"+yytext(); 
+  return new Symbol(sym.AD, yytext()); 
 }
 					case -39:
 						break;
 					case 39:
 						{
   indentCount = 1;  
-  return "DF\t"+yytext(); 
+  return new Symbol(sym.DF, yytext()); 
 }
 					case -40:
 						break;
 					case 40:
 						{
   indentCount = 1;  
-  return "TR\t"+yytext(); 
+  return new Symbol(sym.TR, yytext()); 
 }
 					case -41:
 						break;
 					case 41:
 						{
   indentCount = 1; 
-  return "EI\t"+yytext(); 
+  return new Symbol(sym.EI, yytext()); 
 }
 					case -42:
 						break;
 					case 42:
 						{
   indentCount = 1; 
-  return "FR\t"+yytext(); 
+  return new Symbol(sym.FR, yytext()); 
 }
 					case -43:
 						break;
 					case 43:
 						{
   indentCount = 1;  
-  return "RG\t"+yytext(); 
+  return new Symbol(sym.RG, yytext()); 
 }
 					case -44:
 						break;
 					case 44:
 						{
   indentCount = 1;  
-  return "FL\t"+yytext(); 
+  return new Symbol(sym.FL, yytext()); 
 }
 					case -45:
 						break;
 					case 45:
 						{
   indentCount = 1; 
-  return "PR\t"+yytext(); 
+  return new Symbol(sym.PR, yytext()); 
 }
 					case -46:
 						break;
 					case 46:
 						{
   indentCount = 1;  
-  return "CL\t"+yytext(); 
+  return new Symbol(sym.CL, yytext()); 
 }
 					case -47:
 						break;
 					case 47:
 						{
   indentCount = 1; 
-  return "IM\t"+yytext(); 
+  return new Symbol(sym.IM, yytext()); 
 }
 					case -48:
 						break;
 					case 48:
 						{
   indentCount = 1;  
-  return "EX\t"+yytext(); 
+  return new Symbol(sym.EX, yytext()); 
 }
 					case -49:
 						break;
 					case 49:
 						{
   indentCount = 1;  
-  return "CN\t"+yytext(); 
+  return new Symbol(sym.CN, yytext()); 
 }
 					case -50:
 						break;
@@ -874,672 +842,672 @@ int indentCount = 1;
 					case 52:
 						{ 
   indentCount = 1; 
-  return "Undefined\t"+yytext(); 
+  return new Symbol(sym.UD, yytext()); 
 }
 					case -52:
 						break;
 					case 53:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -53:
 						break;
 					case 54:
 						{ 
   indentCount = 1; 
-  return "ST\t"+yytext(); 
+  return new Symbol(sym.ST, yytext()); 
 }
 					case -54:
 						break;
 					case 55:
 						{
   indentCount = 1;  
-  return "DL\t"+yytext(); 
+  return new Symbol(sym.DL, yytext()); 
 }
 					case -55:
 						break;
 					case 56:
 						{
   indentCount = 1;  
-  return "TR\t"+yytext(); 
+  return new Symbol(sym.TR, yytext()); 
 }
 					case -56:
 						break;
 					case 57:
 						{
   indentCount = 1;  
-  return "FL\t"+yytext(); 
+  return new Symbol(sym.FL, yytext()); 
 }
 					case -57:
 						break;
 					case 59:
 						{ 
   indentCount = 1; 
-  return "Undefined\t"+yytext(); 
+  return new Symbol(sym.UD, yytext()); 
 }
 					case -58:
 						break;
 					case 60:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -59:
 						break;
 					case 62:
 						{ 
   indentCount = 1; 
-  return "Undefined\t"+yytext(); 
+  return new Symbol(sym.UD, yytext()); 
 }
 					case -60:
 						break;
 					case 63:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -61:
 						break;
 					case 65:
 						{ 
   indentCount = 1; 
-  return "Undefined\t"+yytext(); 
+  return new Symbol(sym.UD, yytext()); 
 }
 					case -62:
 						break;
 					case 66:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -63:
 						break;
 					case 68:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -64:
 						break;
 					case 70:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -65:
 						break;
 					case 72:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -66:
 						break;
 					case 74:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -67:
 						break;
 					case 76:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -68:
 						break;
 					case 78:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -69:
 						break;
 					case 80:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -70:
 						break;
 					case 82:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -71:
 						break;
 					case 84:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -72:
 						break;
 					case 86:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -73:
 						break;
 					case 88:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -74:
 						break;
 					case 89:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -75:
 						break;
 					case 90:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -76:
 						break;
 					case 91:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -77:
 						break;
 					case 92:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -78:
 						break;
 					case 93:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -79:
 						break;
 					case 94:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -80:
 						break;
 					case 95:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -81:
 						break;
 					case 96:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -82:
 						break;
 					case 97:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -83:
 						break;
 					case 98:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -84:
 						break;
 					case 99:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -85:
 						break;
 					case 100:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -86:
 						break;
 					case 101:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -87:
 						break;
 					case 102:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -88:
 						break;
 					case 103:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -89:
 						break;
 					case 104:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -90:
 						break;
 					case 105:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -91:
 						break;
 					case 106:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -92:
 						break;
 					case 107:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -93:
 						break;
 					case 108:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -94:
 						break;
 					case 109:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -95:
 						break;
 					case 110:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -96:
 						break;
 					case 111:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -97:
 						break;
 					case 112:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -98:
 						break;
 					case 113:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -99:
 						break;
 					case 114:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -100:
 						break;
 					case 115:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -101:
 						break;
 					case 116:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -102:
 						break;
 					case 117:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -103:
 						break;
 					case 118:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -104:
 						break;
 					case 119:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -105:
 						break;
 					case 120:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -106:
 						break;
 					case 121:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -107:
 						break;
 					case 122:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -108:
 						break;
 					case 123:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -109:
 						break;
 					case 124:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -110:
 						break;
 					case 125:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -111:
 						break;
 					case 126:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -112:
 						break;
 					case 127:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -113:
 						break;
 					case 128:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -114:
 						break;
 					case 129:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -115:
 						break;
 					case 130:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -116:
 						break;
 					case 131:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -117:
 						break;
 					case 132:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -118:
 						break;
 					case 133:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -119:
 						break;
 					case 135:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -120:
 						break;
 					case 136:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -121:
 						break;
 					case 137:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -122:
 						break;
 					case 138:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -123:
 						break;
 					case 139:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -124:
 						break;
 					case 140:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -125:
 						break;
 					case 141:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -126:
 						break;
 					case 142:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -127:
 						break;
 					case 143:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -128:
 						break;
 					case 144:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -129:
 						break;
 					case 145:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -130:
 						break;
 					case 146:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -131:
 						break;
 					case 147:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -132:
 						break;
 					case 148:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -133:
 						break;
 					case 149:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -134:
 						break;
 					case 150:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -135:
 						break;
 					case 151:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -136:
 						break;
 					case 152:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -137:
 						break;
 					case 153:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -138:
 						break;
 					case 154:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -139:
 						break;
 					case 155:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -140:
 						break;
 					case 156:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -141:
 						break;
 					case 157:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -142:
 						break;
 					case 158:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -143:
 						break;
 					case 159:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -144:
 						break;
 					case 160:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -145:
 						break;
 					case 161:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -146:
 						break;
 					case 162:
 						{
   indentCount = 1;  
-  return "ID\t"+yytext(); 
+  return new Symbol(sym.ID, yytext()); 
 }
 					case -147:
 						break;
