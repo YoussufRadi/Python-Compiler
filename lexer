@@ -38,7 +38,8 @@ FALSE=[F|f]alse
 IN=in
 RANGE=range
 DEF=def
-LOOP=while|for
+WHILE = while
+FOR = for
 KEYWORD=str|int
 IMPORT=import
 CLASS=class
@@ -72,9 +73,13 @@ FUNCTION = {ID}_{ID}
   indentCount = 1; 
   return new Symbol(sym.KW, yytext()); 
 }
-<YYINITIAL> {LOOP} { 
+<YYINITIAL> {WHILE} { 
   indentCount = 1;
-  return new Symbol(sym.LP, yytext()); 
+  return new Symbol(sym.WH, yytext()); 
+}
+<YYINITIAL> {FOR} { 
+  indentCount = 1;
+  return new Symbol(sym.FOR, yytext()); 
 }
 <YYINITIAL> {IMPORT} {
   indentCount = 1; 

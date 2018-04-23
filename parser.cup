@@ -4,7 +4,7 @@ import java.util.*;
 
 
 /* Terminals (tokens returned by the scanner). */
-terminal			terminal			INT, IND, KW, LP, IM, PK, FC, PR, FR, IF, EI, TY, EX, CN, OR, NT, AD, TR, FL, RG, DF, CL, ID, DL, IN, ST, FI, NN, LM, GL, IS, YD, PS, RT, ELF, BR, DO, PO, MO, MB, DB, AO, LT, GT, EQ, LC, RC, LB, RB, SM, FA, AA, LS, RS, SC, UD;
+terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IF, EI, TY, EX, CN, OR, NT, AD, TR, FL, RG, DF, CL, ID, DL, IN, ST, FI, NN, LM, GL, IS, YD, PS, RT, ELF, BR, DO, PO, MO, MB, DB, AO, LT, GT, EQ, LC, RC, LB, RB, SM, FA, AA, LS, RS, SC, UD;
 
 
 /* Non-terminals */
@@ -40,7 +40,7 @@ bool_stmnt ::= ID AO TR
 
 range_fn ::= RG LB INT FA INT RB;
 
-for_stmnt ::= LP ID IN range_fn SC
+for_stmnt ::= FOR ID IN range_fn SC
 				{:RESULT = true;:};
 
 params_help ::= FA ID params_help | FA ID;
@@ -54,11 +54,11 @@ def_stmnt ::= DF ID LB params RB SC
 
 bool_expr ::= GT | LT | GT AO | LT AO;
 
-while_stmnt ::= LP ID SC
+while_stmnt ::= WH ID SC
 				{:RESULT = true;:}
-				| LP NT ID SC
+				| WH NT ID SC
 				{:RESULT = true;:}
-				| LP ID bool_expr ID SC
+				| WH ID bool_expr ID SC
 				{:RESULT = true;:}
-				| LP ID bool_expr INT SC
+				| WH ID bool_expr INT SC
 				{:RESULT = true;:};
