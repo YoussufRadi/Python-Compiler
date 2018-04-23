@@ -1,10 +1,12 @@
-package m2;
+package Compilers;
+
+import java_cup.Lexer;
+import java_cup.parser;
+import java_cup.runtime.Symbol;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
-
-import java_cup.runtime.Symbol;
 
 public class AP {
 
