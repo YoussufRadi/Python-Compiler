@@ -9,9 +9,9 @@ import java.io.FileInputStream;
 public class AP {
 
 	public static void main(String [] args) {
-		
+
 		String inFile = System.getProperty("user.dir")+"/src/Compilers/in.in";
-        System.out.println(inFile);
+
 		if (args.length > 1) {
 			inFile = args[0];
 		}
