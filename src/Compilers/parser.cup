@@ -8,7 +8,7 @@ terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IF, EI, TY, EX,
 
 
 /* Non-terminals */
-nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params, params_help, bool_expr, while_stmnt, fn_call_stmnt, fn, fn_call;
+nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params, params_help, bool_expr, while_stmnt, fn_call_stmnt, fn, fn_call, empty_stmnt;
 
 /* The grammar */
 
@@ -19,6 +19,8 @@ program ::= program:p statement:e
 
 statement ::= import_stmnt:s
 			  {:RESULT = s;:}
+				| empty_stmnt:es
+				{:RESULT = es;:}
 				| bool_stmnt:b
 				{:RESULT = b;:}
 				| for_stmnt:fl
@@ -32,7 +34,7 @@ statement ::= import_stmnt:s
 				| error
 				{:RESULT = false;:};
 
-import_stmnt ::= FR PK IM FC
+import_stmnt ::= FR PK IM FC NL
 				{:RESULT = true;:};
 
 bool_stmnt ::= ID AO TR
@@ -42,7 +44,7 @@ bool_stmnt ::= ID AO TR
 
 range_fn ::= RG LB INT FA INT RB;
 
-for_stmnt ::= FOR ID IN range_fn SC
+for_stmnt ::= FOR ID IN range_fn SC NL
 				{:RESULT = true;:};
 
 params_help ::= FA ID params_help | FA ID;
@@ -54,16 +56,19 @@ fn ::= ID LB params RB | ID LB RB;
 fn_call ::= fn NL
 				{:RESULT = true;:};
 
-def_stmnt ::= DF fn SC
+def_stmnt ::= DF fn SC NL
 				{:RESULT = true;:};
 
 bool_expr ::= GT | LT | GT AO | LT AO;
 
-while_stmnt ::= WH ID SC
+while_stmnt ::= WH ID SC NL
 				{:RESULT = true;:}
-				| WH NT ID SC
+				| WH NT ID SC NL
 				{:RESULT = true;:}
-				| WH ID bool_expr ID SC
+				| WH ID bool_expr ID SC NL
 				{:RESULT = true;:}
-				| WH ID bool_expr INT SC
+				| WH ID bool_expr INT SC NL
+				{:RESULT = true;:};
+
+empty_stmnt ::= NL
 				{:RESULT = true;:};
