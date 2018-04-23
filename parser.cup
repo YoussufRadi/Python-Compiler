@@ -8,7 +8,7 @@ terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IF, EI, TY, EX,
 
 
 /* Non-terminals */
-nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params, params_help, bool_expr, while_stmnt;
+nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params, params_help, bool_expr, while_stmnt, fn_call_stmnt, fn, fn_call;
 
 /* The grammar */
 
@@ -27,6 +27,8 @@ statement ::= import_stmnt:s
 				{:RESULT = ds;:}
 				| while_stmnt:ws
 				{:RESULT = ws;:}
+				| fn_call:fc
+				{:RESULT = fc;:}
 				| error
 				{:RESULT = false;:};
 
@@ -47,9 +49,12 @@ params_help ::= FA ID params_help | FA ID;
 
 params ::= ID params_help | ID;
 
-def_stmnt ::= DF ID LB params RB SC
-				{:RESULT = true;:}
-				| DF ID LB RB SC
+fn ::= ID LB params RB | ID LB RB;
+
+fn_call ::= fn
+				{:RESULT = true;:};
+
+def_stmnt ::= DF fn SC
 				{:RESULT = true;:};
 
 bool_expr ::= GT | LT | GT AO | LT AO;
