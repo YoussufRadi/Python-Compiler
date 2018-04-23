@@ -1,0 +1,74 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+
+
+/* Terminals (tokens returned by the scanner). */
+terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IF, EI, TY, EX, CN, OR, NT, AD, TR, FL, RG, DF, CL, ID, DL, IN, ST, FI, NN, LM, GL, IS, YD, PS, RT, ELF, BR, DO, PO, MO, MB, DB, AO, LT, GT, EQ, LC, RC, LB, RB, SM, FA, AA, LS, RS, SC, UD, NL;
+
+
+/* Non-terminals */
+nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params, params_help, bool_expr, while_stmnt, fn_call_stmnt, fn, fn_call, empty_stmnt;
+
+/* The grammar */
+
+
+program ::= program:p statement:e
+			{:RESULT = p && e;:}
+			| {:RESULT = true;:};
+
+statement ::= import_stmnt:s
+			  {:RESULT = s;:}
+				| empty_stmnt:es
+				{:RESULT = es;:}
+				| bool_stmnt:b
+				{:RESULT = b;:}
+				| for_stmnt:fl
+				{:RESULT = fl;:}
+				| def_stmnt:ds
+				{:RESULT = ds;:}
+				| while_stmnt:ws
+				{:RESULT = ws;:}
+				| fn_call:fc
+				{:RESULT = fc;:}
+				| error
+				{:RESULT = false;:};
+
+import_stmnt ::= FR PK IM FC NL
+				{:RESULT = true;:};
+
+bool_stmnt ::= ID AO TR
+				{:RESULT = true;:}
+				| ID AO FL
+				{:RESULT = true;:};
+
+range_fn ::= RG LB INT FA INT RB;
+
+for_stmnt ::= FOR ID IN range_fn SC NL
+				{:RESULT = true;:};
+
+params_help ::= FA ID params_help | FA ID;
+
+params ::= ID params_help | ID;
+
+fn ::= ID LB params RB | ID LB RB;
+
+fn_call ::= fn NL
+				{:RESULT = true;:};
+
+def_stmnt ::= DF fn SC NL
+				{:RESULT = true;:};
+
+bool_expr ::= GT | LT | GT AO | LT AO;
+
+while_stmnt ::= WH ID SC NL
+				{:RESULT = true;:}
+				| WH NT ID SC NL
+				{:RESULT = true;:}
+				| WH ID bool_expr ID SC NL
+				{:RESULT = true;:}
+				| WH ID bool_expr INT SC NL
+				{:RESULT = true;:};
+
+empty_stmnt ::= NL
+				{:RESULT = true;:};

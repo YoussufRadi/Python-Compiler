@@ -74,3 +74,15 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+
+
+# Apple Os Ignore
+.DS_Store
+.AppleDouble
+.LSOverride
+.localized
+
+# IntelliJ 
+.idea/
+*.iml
+*.iws
