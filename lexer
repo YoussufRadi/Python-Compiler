@@ -49,7 +49,8 @@ ALPHA_NUMERIC={ALPHA}|{DIGIT}
 NUMBER={DIGIT}+("."{DIGIT}+)(E[+-]?{DIGIT}+)?
 INTEGER = {DIGIT}+
 INDENT=(\t)
-WHITE_SPACE=([\ \n\r\f\b])+
+NEWLINE = [\n]
+WHITE_SPACE=([\ \r\f\b])+
 NOSLASHQUOTE = [^\"]
 NOSLASHSINGLE = [^\']
 SINGLECOMMENT = #[^\n]* \n
@@ -66,6 +67,10 @@ FUNCTION = {ID}_{ID}
 %%
 <YYINITIAL> {INDENT} {
   return new Symbol(sym.IND, indentCount++); 
+}
+<YYINITIAL> {NEWLINE} { 
+  indentCount = 1;
+  return new Symbol(sym.NL, yytext()); 
 }
 <YYINITIAL> {WHITE_SPACE} { indentCount = 1; }
 <YYINITIAL> {COMMENTS} { indentCount = 1; }
