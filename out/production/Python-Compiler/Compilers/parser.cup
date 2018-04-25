@@ -1,3 +1,5 @@
+package Compilers;
+
 import java_cup.runtime.*;
 import java.io.*;
 import java.util.*;
@@ -8,7 +10,7 @@ terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IF, EI, TY, EX,
 
 
 /* Non-terminals */
-nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params, params_help, bool_expr, while_stmnt, fn_call_stmnt, fn, fn_call, empty_stmnt;
+nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def;
 
 /* The grammar */
 
@@ -29,10 +31,12 @@ statement ::= import_stmnt:s
 				{:RESULT = ds;:}
 				| while_stmnt:ws
 				{:RESULT = ws;:}
-				| fn_call:fc
+				| fn_stmnt:fc
 				{:RESULT = fc;:}
 				| error
 				{:RESULT = false;:};
+
+value ::= ST | INT | ID;
 
 import_stmnt ::= FR PK IM FC NL
 				{:RESULT = true;:};
@@ -47,16 +51,22 @@ range_fn ::= RG LB INT FA INT RB;
 for_stmnt ::= FOR ID IN range_fn SC NL
 				{:RESULT = true;:};
 
-params_help ::= FA ID params_help | FA ID;
+params_def_help ::= FA ID params_def_help | FA ID;
 
-params ::= ID params_help | ID;
+params_def ::= ID params_def_help | ID;
 
-fn ::= ID LB params RB | ID LB RB;
+params_fn_help ::= FA value params_fn_help | FA value;
 
-fn_call ::= fn NL
+params_fn ::= value params_fn_help | value;
+
+fn ::= ID LB params_fn RB | ID LB RB;
+
+def ::= ID LB params_def RB | ID LB RB;
+
+fn_stmnt ::= fn NL
 				{:RESULT = true;:};
 
-def_stmnt ::= DF fn SC NL
+def_stmnt ::= DF def SC NL
 				{:RESULT = true;:};
 
 bool_expr ::= GT | LT | GT AO | LT AO;
