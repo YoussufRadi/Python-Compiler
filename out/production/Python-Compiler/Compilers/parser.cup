@@ -10,7 +10,7 @@ terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IF, EI, TY, EX,
 
 
 /* Non-terminals */
-nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def;
+nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list;
 
 /* The grammar */
 
@@ -36,7 +36,10 @@ statement ::= import_stmnt:s
 				| error
 				{:RESULT = false;:};
 
-value ::= ST | INT | ID;
+// Note that AA is the empty list []
+value ::= ST | INT | list_item | AA | ID;
+
+list_item ::= ID LS INT RS;
 
 import_stmnt ::= FR PK IM FC NL
 				{:RESULT = true;:};
