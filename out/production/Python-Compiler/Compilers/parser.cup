@@ -10,7 +10,7 @@ terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IF, EI, TY, EX,
 
 
 /* Non-terminals */
-nonterminal	Boolean		program, statement, import_stmnt, bool_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list;
+nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list;
 
 /* The grammar */
 
@@ -23,7 +23,7 @@ statement ::= import_stmnt:s
 			  {:RESULT = s;:}
 				| empty_stmnt:es
 				{:RESULT = es;:}
-				| bool_stmnt:b
+				| variable_stmnt:b
 				{:RESULT = b;:}
 				| for_stmnt:fl
 				{:RESULT = fl;:}
@@ -37,16 +37,14 @@ statement ::= import_stmnt:s
 				{:RESULT = false;:};
 
 // Note that AA is the empty list []
-value ::= ST | INT | list_item | AA | ID;
+value ::= ST | INT | list_item | AA | ID | TR | FL;
 
 list_item ::= ID LS INT RS;
 
 import_stmnt ::= FR PK IM FC NL
 				{:RESULT = true;:};
 
-bool_stmnt ::= ID AO TR
-				{:RESULT = true;:}
-				| ID AO FL
+variable_stmnt ::= ID AO value
 				{:RESULT = true;:};
 
 range_fn ::= RG LB INT FA INT RB;
