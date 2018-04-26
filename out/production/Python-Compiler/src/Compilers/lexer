@@ -173,11 +173,6 @@ count = yytext().length();
   System.out.println("FUNCTION" + yytext());
   return new Symbol(sym.FC, yytext()); 
 }
-<YYINITIAL> {PRINT} {
-
-  System.out.println("PRINT" + yytext());
-  return new Symbol(sym.PR, yytext()); 
-}
 <YYINITIAL> {FROM} {
 
   System.out.println("FROM" + yytext());
