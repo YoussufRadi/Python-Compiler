@@ -2,6 +2,4 @@ if x :
     x = 3
     y = choices[0]
 if y :
-    n = 90
-if z :
-s
+n = 90
