@@ -555,10 +555,8 @@ class Lexer implements java_cup.runtime.Scanner {
 						break;
 					case 3:
 						{
-System.out.println("NEWLINE");
 isIndent = false;
 newIndex = yylength();
-return new Symbol(sym.NL, "");
 }
 					case -4:
 						break;
