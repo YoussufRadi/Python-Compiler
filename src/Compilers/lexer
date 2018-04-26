@@ -145,11 +145,6 @@ count = yytext().length();
 }
 <YYINITIAL> {WHITE_SPACE} { }
 <YYINITIAL> {COMMENTS} { }
-<YYINITIAL> {KEYWORD} {
-
-  System.out.println("KEYWORD" + yytext());
-  return new Symbol(sym.KW, yytext()); 
-}
 <YYINITIAL> {WHILE} {
   System.out.println("WHILE" + yytext());
   return new Symbol(sym.WH, yytext()); 

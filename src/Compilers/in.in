@@ -1,3 +1,17 @@
+"""tictactoe game for 2 players
+from blogpost: http://thebillington.co.uk/blog/posts/writing-a-tic-tac-toe-game-in-python by  BILLY REBECCHI,
+slightly improved by Horst JENS"""
+from __future__ import print_function
+
+choices = []
+
+for x in range (0, 9) :
+    choices.append(str(x + 1))
+
+
+playerOneTurn = True
+winner = False
+
 def printBoard() :
     print( '\n -----')
     print( '|' + choices[0] + '|' + choices[1] + '|' + choices[2] + '|')
@@ -7,3 +21,11 @@ def printBoard() :
     print( '|' + choices[6] + '|' + choices[7] + '|' + choices[8] + '|')
     print( ' -----\n')
 
+while not winner :
+    printBoard()
+
+
+    if playerOneTurn :
+        print( "Player 1:")
+    else :
+        print( "Player 2:")
