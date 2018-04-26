@@ -41,7 +41,7 @@ statement ::= import_stmnt:s
 				{:RESULT = false;:};
 
 at_stmnt ::= ID DO fn:f
-             {:RESULT = f;:};
+        {:RESULT = f;:};
 
 
 arth_op ::= PO
@@ -120,10 +120,12 @@ params_fn ::= variable:v params_fn_help:fn
                 | variable:v
                 {:RESULT = v;:};
 
-fn ::= ID LB params_fn:fn RB
-                {:RESULT = fn;:}
+fn ::= ID LB params_fn:f RB
+                {:RESULT = f;:}
                 | ID LB RB
-                {:RESULT = true;:};
+                {:RESULT = true;:}
+								| ID LB fn RB
+								{:RESULT = true;:};
 
 def ::= ID LB params_def RB
                 {:RESULT = true;:}
