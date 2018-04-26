@@ -60,9 +60,13 @@ arth_op ::= PO
         {:RESULT = true;:};
 
 variable_help ::= value:v arth_op:o variable_help:v1
-                {:RESULT = v && o && v1;:}
-                 | value:v
-                {:RESULT = v;:};
+              {:RESULT = v && o && v1;:}
+							| value:v arth_op:o fn:f
+							{:RESULT = v && o && f;:}
+							| fn:f arth_op:o value:v
+							{:RESULT = v && o && f;:}
+              | value:v
+              {:RESULT = v;:};
 
 variable ::= LB variable_help:h RB
                 {:RESULT = h;:}

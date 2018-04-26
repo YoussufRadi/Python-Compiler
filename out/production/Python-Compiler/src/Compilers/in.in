@@ -1,1 +1,1 @@
-z(z(2))
+print ("Player " + str(int1(playerOneTurn + 1)) + " wins!\n")
