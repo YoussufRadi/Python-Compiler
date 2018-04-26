@@ -10,7 +10,7 @@ terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IFS, EI, TY, EX
 
 
 /* Non-terminals */
-nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list, if_stmnt;
+nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list, if_stmnt, rest, eval_expr, arth_op, variable, variable_help, bool_op, at_stmnt;
 
 /* The grammar */
 
@@ -31,60 +31,143 @@ statement ::= import_stmnt:s
 				{:RESULT = ds;:}
 				| while_stmnt:ws
 				{:RESULT = ws;:}
-				| fn_stmnt:fc
+				| fn_stmnt:fc NL
 				{:RESULT = fc;:}
 				| if_stmnt:ifs
 				{:RESULT = ifs;:}
+				| at_stmnt:ats
+				{:RESULT = ats;:}
 				| error
 				{:RESULT = false;:};
 
+at_stmnt ::= ID DO fn:f
+        {:RESULT = f;:};
+
+
+arth_op ::= PO
+        {:RESULT = true;:}
+        | MO
+        {:RESULT = true;:}
+        | MB
+        {:RESULT = true;:}
+        | DB
+        {:RESULT = true;:};
+
+variable_help ::= value:v arth_op:o value:v1
+                {:RESULT = v && o && v1;:}
+                 | value:v
+                {:RESULT = v;:};
+
+variable ::= LB variable_help:h RB
+                {:RESULT = h;:}
+                | variable_help:h
+                {:RESULT = h;:};
+
 // Note that AA is the empty list []
-value ::= ST | INT | list_item | AA | ID | TR | FL;
+value ::= ST
+        {:RESULT = true;:}
+        | INT
+        {:RESULT = true;:}
+        | list_item
+        {:RESULT = true;:}
+        | AA
+        {:RESULT = true;:}
+        | ID
+        {:RESULT = true;:}
+        | TR
+        {:RESULT = true;:}
+        | FL
+        {:RESULT = true;:};
 
-if_stmnt ::= IFS ID SC NL IND program:p NL DED
-				{:RESULT = p;:};
+rest ::= NL IND program:p NL DED
+                {:RESULT = p;:};
 
-list_item ::= ID LS INT RS;
+list_item ::= ID LS variable:v RS
+                {:RESULT = v;:};
 
 import_stmnt ::= FR PK IM FC NL
 				{:RESULT = true;:};
 
-variable_stmnt ::= ID AO value
-				{:RESULT = true;:};
+variable_stmnt ::= ID AO variable:v
+				{:RESULT = v;:}
+				| list_item:l AO variable:v
+				{:RESULT = l && v;:};
 
-range_fn ::= RG LB INT FA INT RB;
+range_fn ::= RG LB INT FA INT RB
+                {:RESULT = true;:};
 
-for_stmnt ::= FOR ID IN range_fn SC NL
-				{:RESULT = true;:};
+for_stmnt ::= FOR variable:v IN range_fn:g SC rest:r
+				{:RESULT = r && g && v;:};
 
-params_def_help ::= FA ID params_def_help | FA ID;
 
-params_def ::= ID params_def_help | ID;
+params_def_help ::= FA ID params_def_help:d
+                {:RESULT = d;:}
+                 | FA ID
+                {:RESULT = true;:};
 
-params_fn_help ::= FA value params_fn_help | FA value;
+params_def ::= ID params_def_help:d
+                {:RESULT = d;:}
+                | ID
+                {:RESULT = true;:};
 
-params_fn ::= value params_fn_help | value;
+params_fn_help ::= FA variable:v params_fn_help:fn
+                {:RESULT = v && fn;:}
+                | FA variable:v
+                {:RESULT = v;:};
 
-fn ::= ID LB params_fn RB | ID LB RB;
+params_fn ::= variable:v params_fn_help:fn
+                {:RESULT = v && fn;:}
+                | variable:v
+                {:RESULT = v;:};
 
-def ::= ID LB params_def RB | ID LB RB;
+fn ::= ID LB params_fn:f RB
+                {:RESULT = f;:}
+                | ID LB RB
+                {:RESULT = true;:}
+								| ID LB fn RB
+								{:RESULT = true;:};
 
-fn_stmnt ::= fn NL
-				{:RESULT = true;:};
+def ::= ID LB params_def RB
+                {:RESULT = true;:}
+                 | ID LB RB
+                {:RESULT = true;:};
 
-def_stmnt ::= DF def SC NL
-				{:RESULT = true;:};
+fn_stmnt ::= fn:f
+			{:RESULT = f;:};
 
-bool_expr ::= GT | LT | GT AO | LT AO;
+def_stmnt ::= DF def SC rest:r
+				{:RESULT = r;:};
 
-while_stmnt ::= WH ID SC NL
-				{:RESULT = true;:}
-				| WH NT ID SC NL
-				{:RESULT = true;:}
-				| WH ID bool_expr ID SC NL
-				{:RESULT = true;:}
-				| WH ID bool_expr INT SC NL
-				{:RESULT = true;:};
+bool_expr ::= GT
+                {:RESULT = true;:}
+                | LT
+                {:RESULT = true;:}
+                | GT AO
+                {:RESULT = true;:}
+                | LT AO
+                {:RESULT = true;:}
+                | EQ
+                {:RESULT = true;:};
+
+bool_op ::= AD
+        {:RESULT = true;:}
+        | OR
+        {:RESULT = true;:};
+
+eval_expr ::= variable:v
+            {:RESULT = v;:}
+            | NT variable:v
+            {:RESULT = v;:}
+            | variable bool_expr:e variable
+               {:RESULT = e;:};
+
+while_stmnt ::= WH eval_expr:e rest:r
+				{:RESULT = e&& r;:};
+
+if_stmnt ::= IFS eval_expr SC rest:r
+				{:RESULT = r;:}
+			| IFS eval_expr:e SC rest:r EI SC rest:r1
+             	{:RESULT =  e && r && r1;:};
 
 empty_stmnt ::= NL
 				{:RESULT = true;:};
