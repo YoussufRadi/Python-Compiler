@@ -1,7 +1,3 @@
-if x :
-    x = 3
-    y = choices[0]
-if y :
-    n = 90
-if z :
-s
+"""tictactoe game for 2 players
+from blogpost: http://thebillington.co.uk/blog/posts/writing-a-tic-tac-toe-game-in-python by  BILLY REBECCHI,
+slightly improved by Horst JENS"""
