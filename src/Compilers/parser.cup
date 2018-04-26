@@ -41,7 +41,8 @@ statement ::= import_stmnt:s
 // Note that AA is the empty list []
 value ::= ST | INT | list_item | AA | ID | TR | FL;
 
-if_stmnt ::= IFS ID SC NL;
+if_stmnt ::= IFS ID SC NL
+				{:RESULT = true;:};
 
 list_item ::= ID LS INT RS;
 
