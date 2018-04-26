@@ -10,7 +10,7 @@ terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IFS, EI, TY, EX
 
 
 /* Non-terminals */
-nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list, if_stmnt, rest;
+nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list, if_stmnt, rest, eval_expr, arth_op, variable, variable_help, bool_op;
 
 /* The grammar */
 
@@ -38,35 +38,40 @@ statement ::= import_stmnt:s
 				| error
 				{:RESULT = false;:};
 
+arth_op ::= PO | MO | MB | DB;
+
+variable_help ::= value arth_op value | value;
+
+variable ::= LB variable_help RB | variable_help;
+
 // Note that AA is the empty list []
 value ::= ST | INT | list_item | AA | ID | TR | FL;
 
 rest ::= NL IND program:p NL DED
                 {:RESULT = p;:};
 
-if_stmnt ::= IFS ID SC rest:r
-				{:RESULT = r;:};
-
-list_item ::= ID LS INT RS;
+list_item ::= ID LS variable RS;
 
 import_stmnt ::= FR PK IM FC rest:r
 				{:RESULT = r;:};
 
-variable_stmnt ::= ID AO value
+variable_stmnt ::= ID AO variable
+				{:RESULT = true;:}
+				| list_item AO variable
 				{:RESULT = true;:};
 
-range_fn ::= RG LB INT FA INT RB;
+range_fn ::= RG LB variable FA variable RB;
 
-for_stmnt ::= FOR ID IN range_fn SC rest:r
+for_stmnt ::= FOR variable IN range_fn SC rest:r
 				{:RESULT = r;:};
 
 params_def_help ::= FA ID params_def_help | FA ID;
 
 params_def ::= ID params_def_help | ID;
 
-params_fn_help ::= FA value params_fn_help | FA value;
+params_fn_help ::= FA variable params_fn_help | FA variable;
 
-params_fn ::= value params_fn_help | value;
+params_fn ::= variable params_fn_help | variable;
 
 fn ::= ID LB params_fn RB | ID LB RB;
 
@@ -78,16 +83,22 @@ fn_stmnt ::= fn rest:r
 def_stmnt ::= DF def SC rest:r
 				{:RESULT = r;:};
 
-bool_expr ::= GT | LT | GT AO | LT AO;
+bool_expr ::= GT | LT | GT AO | LT AO | EQ;
 
-while_stmnt ::= WH ID SC rest:r
-				{:RESULT = r;:}
-				| WH NT ID SC rest:r
-				{:RESULT = r;:}
-				| WH ID bool_expr ID SC rest:r
-				{:RESULT = r;:}
-				| WH ID bool_expr INT SC rest:r
+bool_op ::= AD | OR;
+
+eval_expr ::= variable
+            | NT variable
+            | variable bool_expr:e variable
+               {:RESULT = e;:};
+
+while_stmnt ::= WH eval_expr rest:r
 				{:RESULT = r;:};
+
+if_stmnt ::= IFS eval_expr SC rest:r
+				{:RESULT = r;:}
+			| IFS eval_expr SC rest:r EI SC rest
+             	{:RESULT = r;:};
 
 empty_stmnt ::= NL
 				{:RESULT = true;:};
