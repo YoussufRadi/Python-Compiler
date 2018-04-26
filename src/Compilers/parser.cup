@@ -53,7 +53,7 @@ arth_op ::= PO
         | DB
         {:RESULT = true;:};
 
-variable_help ::= value:v arth_op:o value:v1
+variable_help ::= value:v arth_op:o variable_help:v1
                 {:RESULT = v && o && v1;:}
                  | value:v
                 {:RESULT = v;:};
