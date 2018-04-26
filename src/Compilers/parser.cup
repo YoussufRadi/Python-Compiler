@@ -31,7 +31,7 @@ statement ::= import_stmnt:s
 				{:RESULT = ds;:}
 				| while_stmnt:ws
 				{:RESULT = ws;:}
-				| fn_stmnt:fc
+				| fn_stmnt:fc NL
 				{:RESULT = fc;:}
 				| if_stmnt:ifs
 				{:RESULT = ifs;:}
@@ -40,72 +40,134 @@ statement ::= import_stmnt:s
 				| error
 				{:RESULT = false;:};
 
-at_stmnt ::= ID DO fn_stmnt:f
+at_stmnt ::= ID DO fn:f
              {:RESULT = f;:};
 
 
-arth_op ::= PO | MO | MB | DB;
+arth_op ::= PO
+        {:RESULT = true;:}
+        | MO
+        {:RESULT = true;:}
+        | MB
+        {:RESULT = true;:}
+        | DB
+        {:RESULT = true;:};
 
-variable_help ::= value arth_op value | value;
+variable_help ::= value:v arth_op:o value:v1
+                {:RESULT = v && o && v1;:}
+                 | value:v
+                {:RESULT = v;:};
 
-variable ::= LB variable_help RB | variable_help;
+variable ::= LB variable_help:h RB
+                {:RESULT = h;:}
+                | variable_help:h
+                {:RESULT = h;:};
 
 // Note that AA is the empty list []
-value ::= ST | INT | list_item | AA | ID | TR | FL;
+value ::= ST
+        {:RESULT = true;:}
+        | INT
+        {:RESULT = true;:}
+        | list_item
+        {:RESULT = true;:}
+        | AA
+        {:RESULT = true;:}
+        | ID
+        {:RESULT = true;:}
+        | TR
+        {:RESULT = true;:}
+        | FL
+        {:RESULT = true;:};
 
 rest ::= NL IND program:p NL DED
                 {:RESULT = p;:};
 
-list_item ::= ID LS variable RS;
+list_item ::= ID LS variable:v RS
+                {:RESULT = v;:};
 
 import_stmnt ::= FR PK IM FC NL
 				{:RESULT = true;:};
 
-variable_stmnt ::= ID AO variable
-				{:RESULT = true;:}
-				| list_item AO variable
-				{:RESULT = true;:};
+variable_stmnt ::= ID AO variable:v
+				{:RESULT = v;:}
+				| list_item:l AO variable:v
+				{:RESULT = l && v;:};
 
-range_fn ::= RG LB INT FA INT RB;
+range_fn ::= RG LB INT FA INT RB
+                {:RESULT = true;:};
 
-for_stmnt ::= FOR variable IN range_fn SC rest:r
-				{:RESULT = r;:};
+for_stmnt ::= FOR variable:v IN range_fn:g SC rest:r
+				{:RESULT = r && g && v;:};
 
 
-params_def_help ::= FA ID params_def_help | FA ID;
+params_def_help ::= FA ID params_def_help:d
+                {:RESULT = d;:}
+                 | FA ID
+                {:RESULT = true;:};
 
-params_def ::= ID params_def_help | ID;
+params_def ::= ID params_def_help:d
+                {:RESULT = d;:}
+                | ID
+                {:RESULT = true;:};
 
-params_fn_help ::= FA variable params_fn_help | FA variable;
+params_fn_help ::= FA variable:v params_fn_help:fn
+                {:RESULT = v && fn;:}
+                | FA variable:v
+                {:RESULT = v;:};
 
-params_fn ::= variable params_fn_help | variable;
+params_fn ::= variable:v params_fn_help:fn
+                {:RESULT = v && fn;:}
+                | variable:v
+                {:RESULT = v;:};
 
-fn ::= ID LB params_fn RB | ID LB RB;
+fn ::= ID LB params_fn:fn RB
+                {:RESULT = fn;:}
+                | ID LB RB
+                {:RESULT = true;:};
 
-def ::= ID LB params_def RB | ID LB RB;
+def ::= ID LB params_def:d RB
+                {:RESULT = d;:}
+                 | ID LB RB
+                {:RESULT = true;:};
 
-fn_stmnt ::= fn rest:r
-				{:RESULT = r;:};
+fn_stmnt ::= fn:fn LB fn_stmnt:f RB
+			{:RESULT = fn && f;:}
+			| fn:f
+			{:RESULT = f;:};
 
 def_stmnt ::= DF def SC rest:r
 				{:RESULT = r;:};
 
-bool_expr ::= GT | LT | GT AO | LT AO | EQ;
+bool_expr ::= GT
+                {:RESULT = true;:}
+                | LT
+                {:RESULT = true;:}
+                | GT AO
+                {:RESULT = true;:}
+                | LT AO
+                {:RESULT = true;:}
+                | EQ
+                {:RESULT = true;:};
 
-bool_op ::= AD | OR;
+bool_op ::= AD
+        {:RESULT = true;:}
+        | OR
+        {:RESULT = true;:};
 
-eval_expr ::= variable
-            | NT variable
+eval_expr ::= variable:v
+            {:RESULT = v;:}
+            | NT variable:v
+            {:RESULT = v;:}
             | variable bool_expr:e variable
                {:RESULT = e;:};
 
-while_stmnt ::= WH eval_expr rest:r
-				{:RESULT = r;:};
+while_stmnt ::= WH eval_expr:e rest:r
+				{:RESULT = e&& r;:};
 
 if_stmnt ::= IFS eval_expr SC rest:r
 				{:RESULT = r;:}
-			| IFS eval_expr SC rest:r EI SC rest
-             	{:RESULT = r;:};
+			| IFS eval_expr:e SC rest:r EI SC rest:r1
+             	{:RESULT =  e && r && r1;:};
 
 empty_stmnt ::= NL
 				{:RESULT = true;:};

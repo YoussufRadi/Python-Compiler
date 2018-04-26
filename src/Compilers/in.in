@@ -6,4 +6,4 @@ from __future__ import print_function
 choices = []
 
 for x in range (0, 9) :
-    choices.append()
+    choices.append(str(x + 1))
