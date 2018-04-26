@@ -179,7 +179,7 @@ if_stmnt ::= IFS eval_expr SC rest:r
 			| IFS eval_expr:e SC rest:r NL EI SC rest:r1
              	{:RESULT =  e && r && r1;:};
 
-try_stmnt ::= TY SC rest:r NL EX SC rest:r1
+try_stmnt ::= TY SC rest:r EX SC rest:r1
                {:RESULT = r && r1;:};
 
 empty_stmnt ::= NL
