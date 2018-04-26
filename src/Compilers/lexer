@@ -103,8 +103,10 @@ index = yylength();
 <YYINITIAL> {DEF} {
  return new Symbol(sym.DF, yytext()); }
 <YYINITIAL> {NEWLINE} {
+System.out.println("NEWLINE");
 isIndent = false;
 newIndex = yylength();
+return new Symbol(sym.NL, "");
 }
 
 <YYINITIAL> ^[\ \t]* {
@@ -139,6 +141,7 @@ count = yytext().length();
 }
 <YYINITIAL> {NEWLINE} {
   System.out.println("FIXED NEW LINE");
+  return new Symbol(sym.NL, yytext());
 }
 <YYINITIAL> {WHITE_SPACE} { }
 <YYINITIAL> {COMMENTS} { }

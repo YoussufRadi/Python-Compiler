@@ -6,13 +6,14 @@ import java.util.*;
 
 
 /* Terminals (tokens returned by the scanner). */
-terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IFS, EI, TY, EX, CN, OR, NT, AD, TR, FL, RG, DF, CL, ID, DL, IN, ST, FI, NN, LM, GL, IS, YD, PS, RT, ELF, BR, DO, PO, MO, MB, DB, AO, LT, GT, EQ, LC, RC, LB, RB, SM, FA, AA, LS, RS, SC, UD, DED, ERROR;
+terminal			terminal			NL, INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IFS, EI, TY, EX, CN, OR, NT, AD, TR, FL, RG, DF, CL, ID, DL, IN, ST, FI, NN, LM, GL, IS, YD, PS, RT, ELF, BR, DO, PO, MO, MB, DB, AO, LT, GT, EQ, LC, RC, LB, RB, SM, FA, AA, LS, RS, SC, UD, DED, ERROR;
 
 
 /* Non-terminals */
 nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, value, def, list_item, empty_list, if_stmnt, rest, eval_expr, arth_op, variable, variable_help, bool_op, at_stmnt, try_stmnt, eval_expr_help, not_variable, if_stmnt2, if_stmnt3;
 
 precedence left RB;
+precedence left NL;
 /* The grammar */
 
 
@@ -46,6 +47,8 @@ statement ::= import_stmnt:s
 				{:RESULT = ats;:}
 				| try_stmnt:ty
 				{:RESULT = ty;:}
+				| NL
+				{:RESULT = true;:}
 				| error
 				{:RESULT = false;:};
 
@@ -95,7 +98,7 @@ value ::= ST
         | FL
         {:RESULT = true;:};
 
-rest ::= IND program:p DED
+rest ::= NL IND program:p DED
                 {:RESULT = p;:};
 
 list_item ::= ID LS variable:v RS
@@ -189,17 +192,17 @@ while_stmnt ::= WH eval_expr:e SC rest:r
 
 if_stmnt ::= IFS eval_expr SC rest:r
 				{:RESULT = r;:}
-			| IFS eval_expr:e SC rest:r EI SC rest:r1
+			| IFS eval_expr:e SC rest:r NL EI SC rest:r1
              	{:RESULT =  e && r && r1;:};
 
 if_stmnt2 ::= IFS LB eval_expr:e RB SC rest:r
 				{:RESULT = e && r;:}
-			| IFS LB eval_expr:e RB SC rest:r EI SC rest:r1
+			| IFS LB eval_expr:e RB SC rest:r NL EI SC rest:r1
              	{:RESULT =  e && r && r1;:};
 
 if_stmnt3 ::= IFS LB LB eval_expr:e RB bool_op:o LB eval_expr:e1 RB RB SC rest:r
 				{:RESULT = e && r && o && e1;:}
-			| IFS LB LB eval_expr:e RB bool_op:o LB eval_expr:e1 RB RB SC rest:r EI SC rest:r1
+			| IFS LB LB eval_expr:e RB bool_op:o LB eval_expr:e1 RB RB SC rest:r NL EI SC rest:r1
              	{:RESULT =  e && r && r1 && o && e1;:};
 
 try_stmnt ::= TY SC rest:r EX SC rest:r1
