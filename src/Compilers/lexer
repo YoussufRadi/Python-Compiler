@@ -141,7 +141,7 @@ count = yytext().length();
 }
 <YYINITIAL> {NEWLINE} {
   System.out.println("FIXED NEW LINE");
-  return new Symbol(sym.NL, yytext()); 
+  return new Symbol(sym.NL, yytext());
 }
 <YYINITIAL> {WHITE_SPACE} { }
 <YYINITIAL> {COMMENTS} { }

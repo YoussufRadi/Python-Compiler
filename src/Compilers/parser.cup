@@ -10,7 +10,7 @@ terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IFS, EI, TY, EX
 
 
 /* Non-terminals */
-nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list, if_stmnt, rest, eval_expr, arth_op, variable, variable_help, bool_op, at_stmnt, try_stmnt;
+nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list, if_stmnt, rest, eval_expr, arth_op, variable, variable_help, bool_op, at_stmnt, try_stmnt, eval_expr_help;
 
 precedence left NL;
 
@@ -164,12 +164,17 @@ bool_op ::= AD
         | OR
         {:RESULT = true;:};
 
-eval_expr ::= variable
+eval_expr_help ::= variable
             {:RESULT = true;:}
             | NT variable
             {:RESULT = true;:}
             | variable bool_expr:e variable
                {:RESULT = e;:};
+
+eval_expr ::= eval_expr_help:e bool_op:o eval_expr_help:r
+            {:RESULT = e && o && r;:}
+            | eval_expr_help:e
+            {:RESULT = e;:};
 
 while_stmnt ::= WH eval_expr:e SC rest:r
 				{:RESULT = e && r;:};
