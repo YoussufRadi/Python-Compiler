@@ -534,7 +534,7 @@ class Lexer implements java_cup.runtime.Scanner {
       if (!indentCount.isEmpty() && indentCount.peek() != 0) {
           int pop = indentCount.pop();
           yybegin(YYINITIAL);
-          return new Symbol(Symbol.DED, pop + "");
+          return new Symbol(sym.DED, pop + "");
       } 
       return null;
 			}
@@ -571,7 +571,7 @@ class Lexer implements java_cup.runtime.Scanner {
 System.out.println("NEWLINE");
 isIndent = false;
 newIndex = yylength();
-return new Symbol(Symbol.NL, ""); 
+return new Symbol(sym.NL, "");
 }
 					case -4:
 						break;
@@ -583,7 +583,7 @@ count = yytext().length();
      int tmp  = count;
      count = 0;
     System.out.println("Indent");
-     return new Symbol(Symbol.IND, tmp+"");
+     return new Symbol(sym.IND, tmp+"");
   }
   else if (count < indentCount.peek()) { 
       if (indentCount.contains(count)) {
@@ -592,11 +592,11 @@ count = yytext().length();
               yy_buffer_index -= yylength() + index;
               yybegin(YYINITIAL);
               System.out.println("DEDENT");
-             return new Symbol(Symbol.DED,pop + "");
+             return new Symbol(sym.DED,pop + "");
       }
       else {
               System.out.println("EROROROROR");
-          return new Symbol(Symbol.ERROR, "Unexpected indentation");
+          return new Symbol(sym.ERROR, "Unexpected indentation");
       }
   }
 }
@@ -750,7 +750,7 @@ index = yylength() + newIndex + 1;
 						break;
 					case 29:
 						{
-  return new Symbol(sym.IF, yytext()); 
+  return new Symbol(sym.IFS, yytext());
 }
 					case -30:
 						break;
@@ -780,7 +780,7 @@ index = yylength() + newIndex + 1;
 						break;
 					case 34:
 						{
- return new Symbol(Symbol.DEF, yytext()); }
+ return new Symbol(sym.DF, yytext()); }
 					case -35:
 						break;
 					case 35:

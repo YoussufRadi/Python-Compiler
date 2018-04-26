@@ -34,7 +34,7 @@ import java.util.Stack;
       if (!indentCount.isEmpty() && indentCount.peek() != 0) {
           int pop = indentCount.pop();
           yybegin(YYINITIAL);
-          return new Symbol(Symbol.DED, pop + "");
+          return new Symbol(sym.DED, pop + "");
       } 
       return null;
 %eofval}
@@ -101,12 +101,12 @@ index = yylength() + newIndex + 1;
 index = yylength();
 }
 <YYINITIAL> {DEF} {
- return new Symbol(Symbol.DEF, yytext()); } 
+ return new Symbol(sym.DF, yytext()); }
 <YYINITIAL> {NEWLINE} {
 System.out.println("NEWLINE");
 isIndent = false;
 newIndex = yylength();
-return new Symbol(Symbol.NL, ""); 
+return new Symbol(sym.NL, "");
 }
 
 <YYINITIAL> ^[\ \t]* {
@@ -116,7 +116,7 @@ count = yytext().length();
      int tmp  = count;
      count = 0;
     System.out.println("Indent");
-     return new Symbol(Symbol.IND, tmp+"");
+     return new Symbol(sym.IND, tmp+"");
   }
   else if (count < indentCount.peek()) { 
       if (indentCount.contains(count)) {
@@ -125,11 +125,11 @@ count = yytext().length();
               yy_buffer_index -= yylength() + index;
               yybegin(YYINITIAL);
               System.out.println("DEDENT");
-             return new Symbol(Symbol.DED,pop + "");
+             return new Symbol(sym.DED,pop + "");
       }
       else {
               System.out.println("EROROROROR");
-          return new Symbol(Symbol.ERROR, "Unexpected indentation");
+          return new Symbol(sym.ERROR, "Unexpected indentation");
       }
   }
 
@@ -139,231 +139,288 @@ count = yytext().length();
   System.out.println("FIXED INDENT");
   return new Symbol(sym.IND, 33); 
 }
-<YYINITIAL> {NEWLINE} { 
+<YYINITIAL> {NEWLINE} {
+  System.out.println("FIXED NEW LINE");
   return new Symbol(sym.NL, yytext()); 
 }
 <YYINITIAL> {WHITE_SPACE} { }
 <YYINITIAL> {COMMENTS} { }
 <YYINITIAL> {KEYWORD} {
-  
+
+  System.out.println("KEYWORD" + yytext());
   return new Symbol(sym.KW, yytext()); 
 }
-<YYINITIAL> {WHILE} { 
+<YYINITIAL> {WHILE} {
+  System.out.println("WHILE" + yytext());
   return new Symbol(sym.WH, yytext()); 
 }
-<YYINITIAL> {FOR} { 
+<YYINITIAL> {FOR} {
+  System.out.println("FOR" + yytext());
   return new Symbol(sym.FOR, yytext()); 
 }
 <YYINITIAL> {IMPORT} {
-  
+
+  System.out.println("IMPORT" + yytext());
   return new Symbol(sym.IM, yytext()); 
 }
 <YYINITIAL> {PACKAGE} {
-  
+
+  System.out.println("PACKAGE" + yytext());
   return new Symbol(sym.PK, yytext()); 
 }
 <YYINITIAL> {FUNCTION} {
-  
+
+  System.out.println("FUNCTION" + yytext());
   return new Symbol(sym.FC, yytext()); 
 }
 <YYINITIAL> {PRINT} {
-  
+
+  System.out.println("PRINT" + yytext());
   return new Symbol(sym.PR, yytext()); 
 }
 <YYINITIAL> {FROM} {
-  
+
+  System.out.println("FROM" + yytext());
   return new Symbol(sym.FR, yytext()); 
 }
 <YYINITIAL> {IF} {
-  
-  return new Symbol(sym.IF, yytext()); 
+
+  System.out.println("IF" + yytext());
+  return new Symbol(sym.IFS, yytext());
 }
 <YYINITIAL> {ELSE} {
-  
+
+  System.out.println("ELSE" + yytext());
   return new Symbol(sym.EI, yytext()); 
 }
 <YYINITIAL> {TRY} {
-  
+
+  System.out.println("TRY" + yytext());
   return new Symbol(sym.TY, yytext());
 }
 <YYINITIAL> {EXCEPT} {
-  
+
+  System.out.println("EXCEPT" + yytext());
   return new Symbol(sym.EX, yytext()); 
 }
 <YYINITIAL> {CONTINUE} {
-  
+
+  System.out.println("CONTINUE" + yytext());
   return new Symbol(sym.CN, yytext()); 
 }
 <YYINITIAL> {OR} {
-  
+
+  System.out.println("OR" + yytext());
   return new Symbol(sym.OR, yytext()); 
 }
 <YYINITIAL> {NOT} {
-  
+
+  System.out.println("NOT" + yytext());
   return new Symbol(sym.NT, yytext()); 
 }
 <YYINITIAL> {AND} {
-  
+
+  System.out.println("AND" + yytext());
   return new Symbol(sym.AD, yytext()); 
 }
 <YYINITIAL> {TRUE} {
-  
+
+  System.out.println("TRUE" + yytext());
   return new Symbol(sym.TR, yytext()); 
 }
 <YYINITIAL> {FALSE} {
-  
+
+  System.out.println("FALSE" + yytext());
   return new Symbol(sym.FL, yytext()); 
 }
 <YYINITIAL> {IN} {
-  
+
+  System.out.println("IN" + yytext());
   return new Symbol(sym.IN, yytext()); 
 }
 <YYINITIAL> {RANGE} {
-  
+
+  System.out.println("RANGE" + yytext());
   return new Symbol(sym.RG, yytext()); 
 }
 <YYINITIAL> {DEF} {
-  
+
+  System.out.println("DEF" + yytext());
   return new Symbol(sym.DF, yytext()); 
 }
 <YYINITIAL> {CLASS} {
-  
+
+  System.out.println("CLASS" + yytext());
   return new Symbol(sym.CL, yytext()); 
 }
 <YYINITIAL> {ID} {
-  
+
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 <YYINITIAL> {NUMBER} {
-  
+
+  System.out.println("NUMBER" + yytext());
   return new Symbol(sym.DL, yytext()); 
 }
 <YYINITIAL> {INTEGER} {
-  
+
+  System.out.println("INTEGER" + yytext());
   return new Symbol(sym.INT, yytext()); 
 }
 <YYINITIAL> {STRING} { 
-  
+
+  System.out.println("STRING" + yytext());
   return new Symbol(sym.ST, yytext()); 
 }
 <YYINITIAL> {FINALLY} {
-  
+
+  System.out.println("FINALLY" + yytext());
   return new Symbol(sym.FI, yytext()); 
 }
 <YYINITIAL> {NONE} { 
-  
+
+  System.out.println("NONE" + yytext());
   return new Symbol(sym.NN, yytext()); 
 }
 <YYINITIAL> {LAMBDA} {
-  
+
+  System.out.println("LAMBDA" + yytext());
   return new Symbol(sym.LM, yytext()); 
 }
 <YYINITIAL> {GLOBAL} { 
-  
+
+  System.out.println("GLOBAL" + yytext());
   return new Symbol(sym.GL, yytext()); 
 }
 <YYINITIAL> {IS} { 
-  
+
+  System.out.println("IS" + yytext());
   return new Symbol(sym.IS, yytext());  
 }
 <YYINITIAL> {RETURN} {
-  
+
+  System.out.println("RETURN" + yytext());
   return new Symbol(sym.RT, yytext()); 
 }
 <YYINITIAL> {YIELD} { 
-  
+
+  System.out.println("YIELD" + yytext());
   return new Symbol(sym.YD, yytext()); 
 }
 <YYINITIAL> {PASS} { 
-  
+
+  System.out.println("PASS" + yytext());
   return new Symbol(sym.PS, yytext()); 
 }
 <YYINITIAL> {ELIF} { 
-  
+
+  System.out.println("ELIF" + yytext());
   return new Symbol(sym.ELF, yytext()); 
 }
 <YYINITIAL> {BREAK} { 
-  
+
+  System.out.println("BREAK" + yytext());
   return new Symbol(sym.BR, yytext());  
 }
 <YYINITIAL> "." { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.DO, yytext()); 
 }
 <YYINITIAL> "+" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.PO, yytext()); 
 }
 <YYINITIAL> "-" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.MO, yytext()); 
 }
 <YYINITIAL> "*" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.MB, yytext()); 
 }
 <YYINITIAL> "/" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.DB, yytext()); 
 }
 <YYINITIAL> "=" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.AO, yytext()); 
 }
 <YYINITIAL> "<" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.LT, yytext()); 
 }
 <YYINITIAL> ">" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.GT, yytext()); 
 }
 <YYINITIAL> "==" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.EQ, yytext()); 
 }
 <YYINITIAL> "{" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.LC, yytext()); 
 }
 <YYINITIAL> "}" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.RC, yytext()); 
 }
 <YYINITIAL> "(" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.LB, yytext()); 
 }
 <YYINITIAL> ")" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.RB, yytext()); 
 }
 <YYINITIAL> ";" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.SM, yytext()); 
 }
 <YYINITIAL> "," { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.FA, yytext()); 
 }
 
 <YYINITIAL> "[]" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.AA, yytext()); 
 }
 <YYINITIAL> "[" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.LS, yytext()); 
 }
 <YYINITIAL> "]" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.RS, yytext()); 
 }
 <YYINITIAL> ":" { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.SC, yytext()); 
 }
 <YYINITIAL> . { 
-  
+
+  System.out.println(yytext());
   return new Symbol(sym.UD, yytext()); 
 }
