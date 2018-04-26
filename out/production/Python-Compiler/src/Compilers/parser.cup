@@ -10,7 +10,9 @@ terminal			terminal			INT, IND, KW, FOR, WH, IM, PK, FC, PR, FR, IFS, EI, TY, EX
 
 
 /* Non-terminals */
-nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list, if_stmnt, rest, eval_expr, arth_op, variable, variable_help, bool_op, at_stmnt;
+nonterminal	Boolean		program, statement, import_stmnt, variable_stmnt, range_fn, for_stmnt, def_stmnt, params_def, params_def_help, params_fn, params_fn_help, bool_expr, while_stmnt, fn, fn_stmnt, empty_stmnt, value, def, list_item, empty_list, if_stmnt, rest, eval_expr, arth_op, variable, variable_help, bool_op, at_stmnt, try_stmnt;
+
+precedence left NL;
 
 /* The grammar */
 
@@ -29,14 +31,18 @@ statement ::= import_stmnt:s
 				{:RESULT = fl;:}
 				| def_stmnt:ds
 				{:RESULT = ds;:}
+				| CN
+				{:RESULT = true;:}
 				| while_stmnt:ws
 				{:RESULT = ws;:}
-				| fn_stmnt:fc NL
+				| fn_stmnt:fc
 				{:RESULT = fc;:}
 				| if_stmnt:ifs
 				{:RESULT = ifs;:}
 				| at_stmnt:ats
 				{:RESULT = ats;:}
+				| try_stmnt:ty
+				{:RESULT = ty;:}
 				| error
 				{:RESULT = false;:};
 
@@ -83,7 +89,7 @@ value ::= ST
         | FL
         {:RESULT = true;:};
 
-rest ::= NL IND program:p NL DED
+rest ::= NL IND program:p DED
                 {:RESULT = p;:};
 
 list_item ::= ID LS variable:v RS
@@ -95,7 +101,9 @@ import_stmnt ::= FR PK IM FC NL
 variable_stmnt ::= ID AO variable:v
 				{:RESULT = v;:}
 				| list_item:l AO variable:v
-				{:RESULT = l && v;:};
+				{:RESULT = l && v;:}
+				| ID AO fn:f
+				{:RESULT = f;:};
 
 range_fn ::= RG LB INT FA INT RB
                 {:RESULT = true;:};
@@ -128,8 +136,8 @@ fn ::= ID LB params_fn:f RB
                 {:RESULT = f;:}
                 | ID LB RB
                 {:RESULT = true;:}
-								| ID LB fn RB
-								{:RESULT = true;:};
+                | ID LB fn RB
+                {:RESULT = true;:};
 
 def ::= ID LB params_def RB
                 {:RESULT = true;:}
@@ -158,20 +166,23 @@ bool_op ::= AD
         | OR
         {:RESULT = true;:};
 
-eval_expr ::= variable:v
-            {:RESULT = v;:}
-            | NT variable:v
-            {:RESULT = v;:}
+eval_expr ::= variable
+            {:RESULT = true;:}
+            | NT variable
+            {:RESULT = true;:}
             | variable bool_expr:e variable
                {:RESULT = e;:};
 
-while_stmnt ::= WH eval_expr:e rest:r
-				{:RESULT = e&& r;:};
+while_stmnt ::= WH eval_expr:e SC rest:r
+				{:RESULT = e && r;:};
 
 if_stmnt ::= IFS eval_expr SC rest:r
 				{:RESULT = r;:}
-			| IFS eval_expr:e SC rest:r EI SC rest:r1
+			| IFS eval_expr:e SC rest:r NL EI SC rest:r1
              	{:RESULT =  e && r && r1;:};
+
+try_stmnt ::= TY SC rest:r EX SC rest:r1
+               {:RESULT = r && r1;:};
 
 empty_stmnt ::= NL
 				{:RESULT = true;:};

@@ -1,1 +1,1 @@
-print ("Player " + str(int1(playerOneTurn + 1)) + " wins!\n")
+c = int(input(">> "))

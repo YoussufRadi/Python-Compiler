@@ -1,3 +1,1 @@
-if choices[choice - 1] == 'X' or choices [choice-1] == 'O':
-    print("illegal move, plase try again")
-    continue
+c = int(input(">> "))

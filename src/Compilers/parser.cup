@@ -101,7 +101,9 @@ import_stmnt ::= FR PK IM FC NL
 variable_stmnt ::= ID AO variable:v
 				{:RESULT = v;:}
 				| list_item:l AO variable:v
-				{:RESULT = l && v;:};
+				{:RESULT = l && v;:}
+				| ID AO fn:f
+				{:RESULT = f;:};
 
 range_fn ::= RG LB INT FA INT RB
                 {:RESULT = true;:};
