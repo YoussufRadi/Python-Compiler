@@ -125,14 +125,12 @@ fn ::= ID LB params_fn:fn RB
                 | ID LB RB
                 {:RESULT = true;:};
 
-def ::= ID LB params_def:d RB
-                {:RESULT = d;:}
+def ::= ID LB params_def RB
+                {:RESULT = true;:}
                  | ID LB RB
                 {:RESULT = true;:};
 
-fn_stmnt ::= fn:fn LB fn_stmnt:f RB
-			{:RESULT = fn && f;:}
-			| fn:f
+fn_stmnt ::= fn:f
 			{:RESULT = f;:};
 
 def_stmnt ::= DF def SC rest:r
