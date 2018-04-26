@@ -1,5 +1,5 @@
-if x :
+if x == 4 :
     x = 3
     y = choices[0]
 if y :
-n = 90
+    n = 90
