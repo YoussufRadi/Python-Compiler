@@ -604,6 +604,7 @@ count = yytext().length();
 						break;
 					case 5:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -6:
@@ -621,114 +622,133 @@ count = yytext().length();
 						break;
 					case 8:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.UD, yytext()); 
 }
 					case -9:
 						break;
 					case 9:
 						{
+  System.out.println("INTEGER" + yytext());
   return new Symbol(sym.INT, yytext()); 
 }
 					case -10:
 						break;
 					case 10:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.DO, yytext()); 
 }
 					case -11:
 						break;
 					case 11:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.MO, yytext()); 
 }
 					case -12:
 						break;
 					case 12:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.PO, yytext()); 
 }
 					case -13:
 						break;
 					case 13:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.MB, yytext()); 
 }
 					case -14:
 						break;
 					case 14:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.DB, yytext()); 
 }
 					case -15:
 						break;
 					case 15:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.AO, yytext()); 
 }
 					case -16:
 						break;
 					case 16:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.LT, yytext()); 
 }
 					case -17:
 						break;
 					case 17:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.GT, yytext()); 
 }
 					case -18:
 						break;
 					case 18:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.LC, yytext()); 
 }
 					case -19:
 						break;
 					case 19:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.RC, yytext()); 
 }
 					case -20:
 						break;
 					case 20:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.LB, yytext()); 
 }
 					case -21:
 						break;
 					case 21:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.RB, yytext()); 
 }
 					case -22:
 						break;
 					case 22:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.SM, yytext()); 
 }
 					case -23:
 						break;
 					case 23:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.FA, yytext()); 
 }
 					case -24:
 						break;
 					case 24:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.LS, yytext()); 
 }
 					case -25:
 						break;
 					case 25:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.RS, yytext()); 
 }
 					case -26:
 						break;
 					case 26:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.SC, yytext()); 
 }
 					case -27:
@@ -744,36 +764,42 @@ index = yylength() + newIndex + 1;
 						break;
 					case 28:
 						{ 
+  System.out.println("STRING" + yytext());
   return new Symbol(sym.ST, yytext()); 
 }
 					case -29:
 						break;
 					case 29:
 						{
+  System.out.println("IF" + yytext());
   return new Symbol(sym.IFS, yytext());
 }
 					case -30:
 						break;
 					case 30:
 						{
+  System.out.println("IN" + yytext());
   return new Symbol(sym.IN, yytext()); 
 }
 					case -31:
 						break;
 					case 31:
 						{
+  System.out.println("OR" + yytext());
   return new Symbol(sym.OR, yytext()); 
 }
 					case -32:
 						break;
 					case 32:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.EQ, yytext()); 
 }
 					case -33:
 						break;
 					case 33:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.AA, yytext()); 
 }
 					case -34:
@@ -785,120 +811,140 @@ index = yylength() + newIndex + 1;
 						break;
 					case 35:
 						{
+  System.out.println("FUNCTION" + yytext());
   return new Symbol(sym.FC, yytext()); 
 }
 					case -36:
 						break;
 					case 36:
-						{ 
+						{
+  System.out.println("FOR" + yytext());
   return new Symbol(sym.FOR, yytext()); 
 }
 					case -37:
 						break;
 					case 37:
 						{
+  System.out.println("KEYWORD" + yytext());
   return new Symbol(sym.KW, yytext()); 
 }
 					case -38:
 						break;
 					case 38:
 						{
+  System.out.println("TRY" + yytext());
   return new Symbol(sym.TY, yytext());
 }
 					case -39:
 						break;
 					case 39:
 						{
+  System.out.println("NOT" + yytext());
   return new Symbol(sym.NT, yytext()); 
 }
 					case -40:
 						break;
 					case 40:
 						{
+  System.out.println("PACKAGE" + yytext());
   return new Symbol(sym.PK, yytext()); 
 }
 					case -41:
 						break;
 					case 41:
 						{
+  System.out.println("NUMBER" + yytext());
   return new Symbol(sym.DL, yytext()); 
 }
 					case -42:
 						break;
 					case 42:
 						{
+  System.out.println("AND" + yytext());
   return new Symbol(sym.AD, yytext()); 
 }
 					case -43:
 						break;
 					case 43:
 						{
+  System.out.println("ELSE" + yytext());
   return new Symbol(sym.EI, yytext()); 
 }
 					case -44:
 						break;
 					case 44:
 						{
+  System.out.println("FROM" + yytext());
   return new Symbol(sym.FR, yytext()); 
 }
 					case -45:
 						break;
 					case 45:
 						{
+  System.out.println("TRUE" + yytext());
   return new Symbol(sym.TR, yytext()); 
 }
 					case -46:
 						break;
 					case 46:
 						{
+  System.out.println("FALSE" + yytext());
   return new Symbol(sym.FL, yytext()); 
 }
 					case -47:
 						break;
 					case 47:
 						{
+  System.out.println("RANGE" + yytext());
   return new Symbol(sym.RG, yytext()); 
 }
 					case -48:
 						break;
 					case 48:
-						{ 
+						{
+  System.out.println("WHILE" + yytext());
   return new Symbol(sym.WH, yytext()); 
 }
 					case -49:
 						break;
 					case 49:
 						{
+  System.out.println("PRINT" + yytext());
   return new Symbol(sym.PR, yytext()); 
 }
 					case -50:
 						break;
 					case 50:
 						{
+  System.out.println("CLASS" + yytext());
   return new Symbol(sym.CL, yytext()); 
 }
 					case -51:
 						break;
 					case 51:
 						{
+  System.out.println("EXCEPT" + yytext());
   return new Symbol(sym.EX, yytext()); 
 }
 					case -52:
 						break;
 					case 52:
 						{
+  System.out.println("IMPORT" + yytext());
   return new Symbol(sym.IM, yytext()); 
 }
 					case -53:
 						break;
 					case 53:
 						{
+  System.out.println("CONTINUE" + yytext());
   return new Symbol(sym.CN, yytext()); 
 }
 					case -54:
 						break;
 					case 55:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -55:
@@ -909,570 +955,665 @@ index = yylength() + newIndex + 1;
 						break;
 					case 57:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.UD, yytext()); 
 }
 					case -57:
 						break;
 					case 58:
 						{ 
+  System.out.println("STRING" + yytext());
   return new Symbol(sym.ST, yytext()); 
 }
 					case -58:
 						break;
 					case 59:
 						{
+  System.out.println("NUMBER" + yytext());
   return new Symbol(sym.DL, yytext()); 
 }
 					case -59:
 						break;
 					case 60:
 						{
+  System.out.println("TRUE" + yytext());
   return new Symbol(sym.TR, yytext()); 
 }
 					case -60:
 						break;
 					case 61:
 						{
+  System.out.println("FALSE" + yytext());
   return new Symbol(sym.FL, yytext()); 
 }
 					case -61:
 						break;
 					case 63:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -62:
 						break;
 					case 64:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.UD, yytext()); 
 }
 					case -63:
 						break;
 					case 66:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -64:
 						break;
 					case 67:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.UD, yytext()); 
 }
 					case -65:
 						break;
 					case 69:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -66:
 						break;
 					case 70:
 						{ 
+  System.out.println(yytext());
   return new Symbol(sym.UD, yytext()); 
 }
 					case -67:
 						break;
 					case 72:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -68:
 						break;
 					case 74:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -69:
 						break;
 					case 76:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -70:
 						break;
 					case 78:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -71:
 						break;
 					case 80:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -72:
 						break;
 					case 82:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -73:
 						break;
 					case 84:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -74:
 						break;
 					case 86:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -75:
 						break;
 					case 88:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -76:
 						break;
 					case 90:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -77:
 						break;
 					case 92:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -78:
 						break;
 					case 94:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -79:
 						break;
 					case 96:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -80:
 						break;
 					case 97:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -81:
 						break;
 					case 98:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -82:
 						break;
 					case 99:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -83:
 						break;
 					case 100:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -84:
 						break;
 					case 101:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -85:
 						break;
 					case 102:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -86:
 						break;
 					case 103:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -87:
 						break;
 					case 104:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -88:
 						break;
 					case 105:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -89:
 						break;
 					case 106:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -90:
 						break;
 					case 107:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -91:
 						break;
 					case 108:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -92:
 						break;
 					case 109:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -93:
 						break;
 					case 110:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -94:
 						break;
 					case 111:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -95:
 						break;
 					case 112:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -96:
 						break;
 					case 113:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -97:
 						break;
 					case 114:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -98:
 						break;
 					case 115:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -99:
 						break;
 					case 116:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -100:
 						break;
 					case 117:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -101:
 						break;
 					case 118:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -102:
 						break;
 					case 119:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -103:
 						break;
 					case 120:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -104:
 						break;
 					case 121:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -105:
 						break;
 					case 122:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -106:
 						break;
 					case 123:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -107:
 						break;
 					case 124:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -108:
 						break;
 					case 125:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -109:
 						break;
 					case 126:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -110:
 						break;
 					case 127:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -111:
 						break;
 					case 128:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -112:
 						break;
 					case 129:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -113:
 						break;
 					case 130:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -114:
 						break;
 					case 131:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -115:
 						break;
 					case 132:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -116:
 						break;
 					case 133:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -117:
 						break;
 					case 134:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -118:
 						break;
 					case 135:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -119:
 						break;
 					case 136:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -120:
 						break;
 					case 137:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -121:
 						break;
 					case 138:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -122:
 						break;
 					case 139:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -123:
 						break;
 					case 140:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -124:
 						break;
 					case 142:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -125:
 						break;
 					case 143:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -126:
 						break;
 					case 144:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -127:
 						break;
 					case 145:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -128:
 						break;
 					case 146:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -129:
 						break;
 					case 147:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -130:
 						break;
 					case 148:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -131:
 						break;
 					case 149:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -132:
 						break;
 					case 150:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -133:
 						break;
 					case 151:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -134:
 						break;
 					case 152:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -135:
 						break;
 					case 153:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -136:
 						break;
 					case 154:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -137:
 						break;
 					case 155:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -138:
 						break;
 					case 156:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -139:
 						break;
 					case 157:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -140:
 						break;
 					case 158:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -141:
 						break;
 					case 159:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -142:
 						break;
 					case 160:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -143:
 						break;
 					case 161:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -144:
 						break;
 					case 162:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -145:
 						break;
 					case 163:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -146:
 						break;
 					case 164:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -147:
 						break;
 					case 165:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -148:
 						break;
 					case 166:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -149:
 						break;
 					case 167:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -150:
 						break;
 					case 168:
 						{
+  System.out.println("ID" + yytext());
   return new Symbol(sym.ID, yytext()); 
 }
 					case -151:
