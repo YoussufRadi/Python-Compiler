@@ -1,10 +1,19 @@
 import java_cup.runtime.*;
 import java.io.*;
 import java.util.*;
+import java.security.SecureRandom;
 
 action code {:
-  int counter = 0;
-  int lineCounter = 100;
+  static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  static SecureRandom rnd = new SecureRandom();
+
+  String randomString(){
+    StringBuilder sb = new StringBuilder(2);
+    for( int i = 0; i < 2; i++ ) 
+        sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+    return sb.toString();
+  }
+
 :}
 /* Terminals (tokens returned by the scanner). */
 terminal			DEF, COLON, OPARAN, CPARAN, EQUAL, COMMA, OSQUARE, CSQAURE, 
@@ -52,16 +61,29 @@ statement ::= expr:e
 			  RESULT = fs;
 			  :};
 			  
-expr ::= ID:i expr_list:el {: 
-          RESULT =  i + " = " + el;:}
+expr ::= ID:i expr_list:el {:
+          String line1 = randomString(); 
+          RESULT =  line1 + " : " + i + " = " + el;:}
          | error {:RESULT = "false";:};	
 
 expr_list ::= EQUAL value:e {:RESULT =   e;:};
 
-value ::= ID:i1 ASTRICK ID:i2 {:RESULT = i1 + " * " + i2 + "\n";:} ;
+value ::= ID:i1 ASTRICK ID:i2 {:
+              RESULT = i1 + " * " + i2 + "\n";:} ;
          		  
 for_stmt ::= FOR ID:i1 IN ID OPARAN NUMBER:x1 COMMA NUMBER:x2 CPARAN COLON suite:s {:
-              RESULT = i1 + " = " + x1 + "\n" + "if " + i1 + " > " + x2 + " jump to " + "dummy " + "\n"  + s + i1 + " = " + i1 + " + 1" + "\n" + "jump to " + "dummy 2 " + "\n"  ;
+
+              String line1 = randomString();
+              String line2 = randomString();
+              String line3 = randomString();
+              String line4 = randomString();
+              String line5 = randomString();
+              String line6 = randomString();
+              String line7 = randomString();
+
+              RESULT =  line1 + " : " + i1 + " = " + x1 + "\n" + line2 + " : " + "if " + i1 + " > " + x2 + " goto " + line6 
+              + "\n" + line7 + " : " + "if " + i1 + " < " + x1 + " goto " + line6 + "\n" + s + 
+              line4 + " : " + i1 + " = " + i1 + " + 1" + "\n" + line5 + " : " + "goto " + line2 + "\n" + line6   + " :" + "\n" ;
               :};
               
 suite ::=  newline:n INDENT newline:n1 statements:ss newline:n2 DEDENT 		  
