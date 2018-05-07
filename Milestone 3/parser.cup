@@ -1,0 +1,76 @@
+import java_cup.runtime.*;
+import java.io.*;
+import java.util.*;
+
+
+/* Terminals (tokens returned by the scanner). */
+terminal			DEF, COLON, OPARAN, CPARAN, EQUAL, COMMA, OSQUARE, CSQAURE, 
+                    SEMICOLON, PLUSEQ, MINUSEQ, ASTRICKEQ, DIVEQ, MODEQ, ANDEQ, 
+                    OREQ, NOTEQ, RSEQ, LSEQ, POWEQ, INTDIVEQ, ID, CONTINUE, IF, 
+                    ELSE, ELIF, GROP, LESSOP, EQ, GREQ, LESSEQ, NOT, OR, AND, 
+                    NOTEQUAL, IN, NOTIN, IS, ISNOT, NUMBER, STRING, XOR, AMBER, 
+                    PLUS, MINUS, LOGNOT, ASTRICK, SLASH, MOD, DOUBLESLASH, RS, 
+                    LS, POW, OCURLY, CCURLY, FOR, WHILE, RETURN, NEWLINE, IMPORT, 
+                    FROM, BREAK, AS, TRUE, FALSE, TRY, EXCEPT, HASH, BLOCK, SINGLEQUOTE, 
+                    DOUBLEQOUTE, AT, DOUBLE, DOT, INDENT, DEDENT, ERROR;
+
+/* Non-terminals */
+nonterminal	String		program, statement, for_stmt, suite, newline, statements, statementsO, newlineOP, expr, expr_list, value;
+
+precedence left NEWLINE;
+
+/* The grammar */
+
+program ::= newline:n statements:e newline:n1
+			{:	
+			RESULT = e;
+			:}
+			| {:
+			RESULT = "";
+			:};
+			
+statements ::= statement:s newline statementsO:ss {:
+              RESULT = s + ss;
+              :};
+
+statementsO ::=  statement:s newline statementsO:so 
+                  {:                  
+                  RESULT = so + s;
+                  :}
+                  | {:
+                RESULT = "";
+                :};			
+
+statement ::= expr:e
+			  {:
+			  RESULT = e;
+			  :}
+			  | for_stmt:fs {:
+			  RESULT = fs;
+			  :};
+			  
+expr ::= ID:i expr_list:el {: 
+          RESULT =  i + " = " + el;:}
+         | error {:RESULT = "false";:};	
+
+expr_list ::= EQUAL value:e {:RESULT =   e;:};
+
+value ::= ID:i1 ASTRICK ID:i2 {:RESULT = i1 + " * " + i2;:} ;
+         		  
+for_stmt ::= FOR ID:i1 IN ID OPARAN NUMBER:x1 COMMA NUMBER:x2 CPARAN COLON suite:s {:
+              RESULT = "for loop " + i1 + "from" + x1 + " to " + x2 +  "\n "+s;
+              :};
+              
+suite ::=  newline:n INDENT newline:n1 statements:ss newline:n2 DEDENT 		  
+            {:      
+            RESULT = ss;
+            :}
+            | error {:RESULT = "false";:};
+
+newline ::= NEWLINE newlineOP:n 
+            {:RESULT = "";:}
+           | {:RESULT = "true";:};
+newlineOP ::=   NEWLINE newlineOP:n
+               {:RESULT = "";:}           
+              | {:RESULT = "true";:};
+             

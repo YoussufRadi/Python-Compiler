@@ -1,0 +1,364 @@
+import java_cup.runtime.Symbol;
+import java.util.*;
+import java.io.*;
+
+
+%%
+
+
+%class Lexer
+%cup
+%implements java_cup.runtime.Scanner
+%function next_Symbol
+%type java_cup.runtime.Symbol
+%char
+%line
+%states SPACE
+
+
+%{
+	//initialize  variables to be used by class
+	static Stack<Integer> indentCount = new Stack<Integer>();
+	static int count = 0;
+	static String lex = "";
+	static boolean isIndent = false;
+	int index = 0;
+	int newIndex = 0;
+	
+	@Override
+	public Symbol next_token() throws Exception {
+		// TODO Auto-generated method stub
+		Symbol next=null;
+		try
+		{
+		 next= next_Symbol();
+		}
+		catch(Exception e)
+		{
+		}
+		return next;
+	}
+	public static void main(String[] args) throws FileNotFoundException {
+		String inFile = "ms3.py";
+		String outFile = "Sample.out";
+
+		if (args.length > 1) {
+			inFile = args[0];
+			outFile = args[1];
+		}
+
+		Lexer lexer = new Lexer(new BufferedReader(new FileReader(inFile)));
+
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
+
+			Symbol t;
+
+			while ((t = lexer.next_Symbol()) != null) {
+				System.out.println(t.toString());
+				writer.write(t.toString());
+				writer.newLine();
+				
+			}
+
+			writer.close(); 
+			
+			System.out.println("Done tokenizing file: " + inFile);
+			System.out.println("Output written in file: " + outFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		}
+%}
+
+
+%init{
+    indentCount.push(0);
+//Add code to be executed on initialization of the lexer
+
+%init}
+
+%eofval{  
+      if (!indentCount.isEmpty() && indentCount.peek() != 0) {
+          int pop = indentCount.pop();
+          yybegin(YYINITIAL);
+          return new Symbol(sym.DEDENT, pop + "");
+      } 
+      return new Symbol(sym.EOF, null);
+%eofval}
+
+DEF=def
+NOSPACE=[^ \ \r\t\f]
+COLON=\:
+OPARAN=\(
+CPARAN=\)
+EQUAL=\=
+COMMA=\,
+OSQUARE=\[
+CSQAURE=\]
+SEMICOLON=\;
+PLUSEQ=\+\=
+MINUSEQ=\-\=
+ASTRICKEQ=\*\=
+DIVEQ=\/\=
+MODEQ=\%\=
+ANDEQ=\&\=
+OREQ=\|\=
+NOTEQ="^="
+RSEQ=\>\>\=
+LSEQ=\<\<\=
+POWEQ=\*\*\=
+INTDIVEQ=\/\/\=
+ID=[A-Za-z_]([A-Za-z_]|[0-9])*
+CONTINUE=continue
+IF=if
+ELSE=else
+ELIF=elif
+GROP=\>
+LESSOP=\<
+EQ=\=\=
+GREQ=\>\=
+LESSEQ=\<\=
+NOT=not
+OR=or
+AND=and
+NOTEQUAL=\!\=
+IN=in
+NOTIN="not in"
+IS=is
+ISNOT="is not"
+NUMBER=[0-9]+
+STRING=\"[^\"]*\"|\'[^\']*\'
+XOR=\|
+AMBER=\&
+PLUS=\+
+MINUS=\-
+LOGNOT=\~
+ASTRICK=\*
+SLASH=\\
+MOD=\%
+DOUBLESLASH=\\\\
+RS=\<\<
+LS=\<\<
+POW=\*\*
+OCURLY=\{
+CCURLY=\}
+FOR=for
+WHILE=while
+RETURN=return
+INDENT=INDENT
+DEDENT=DEDENT 
+NEWLINE=\n
+IMPORT=import
+FROM=from
+BREAK=break
+AS=as
+TRUE=True
+FALSE=False
+TRY=try
+EXCEPT=except
+HASH=\#
+BLOCK=\"\"\"[^\"\"\"]*\"\"\"
+SINGLEQUOTE=\'
+DOUBLEQOUTE=\"
+AT="@"
+DOUBLE=[0-9]?\.[0-9]+
+WHITESPACE=([\ \t\b\r\f])
+DOT=\.
+IN=in
+INDENTATION=^{WHITESPACE}
+
+
+%% 
+<YYINITIAL> ^[\ \t\r\f\b]*\n {
+int tmp = index++;
+index = yylength() + newIndex;
+newIndex = index - tmp;
+index = yylength() + newIndex + 1;
+}
+<YYINITIAL> ^[\ \t]*\n {
+index = yylength();
+}
+<YYINITIAL> {DEF} {
+ return new Symbol(sym.DEF, yytext()); } 
+<YYINITIAL> {NEWLINE} { 
+isIndent = false;
+newIndex = yylength();
+return new Symbol(sym.NEWLINE, ""); 
+}
+
+<YYINITIAL> ^[\ \t]* {
+count = yytext().length();
+ if (count > indentCount.peek()) {
+     indentCount.push(count);
+     int tmp  = count;
+     count = 0; 
+     return new Symbol(sym.INDENT, tmp+"");
+  }
+  else if (count < indentCount.peek()) { 
+      if (indentCount.contains(count)) {
+              int pop = indentCount.pop();
+              if ((yylength() + index) <  yy_buffer_index)
+              yy_buffer_index -= yylength() + index;
+              yybegin(YYINITIAL);
+             return new Symbol(sym.DEDENT,pop + "");   
+             } 
+      
+      else {
+          return new Symbol(sym.ERROR, "Unexpected indentation");
+      }
+  }
+
+
+}
+<YYINITIAL> {WHITESPACE} {  } 
+<YYINITIAL> {BLOCK} {  } 
+<YYINITIAL> {DOT} { 
+ return new Symbol(sym.DOT, yytext()); } 
+<YYINITIAL> {COLON} { 
+ return new Symbol(sym.COLON, yytext()); } 
+<YYINITIAL> {OPARAN} { 
+ return new Symbol(sym.OPARAN, yytext()); } 
+<YYINITIAL> {CPARAN} { 
+ return new Symbol(sym.CPARAN, yytext()); } 
+<YYINITIAL> {EQUAL} { 
+ return new Symbol(sym.EQUAL, yytext()); } 
+<YYINITIAL> {COMMA} { 
+ return new Symbol(sym.COMMA, yytext()); } 
+<YYINITIAL> {OSQUARE} { 
+ return new Symbol(sym.OSQUARE, yytext()); } 
+<YYINITIAL> {CSQAURE} { 
+ return new Symbol(sym.CSQAURE, yytext()); } 
+<YYINITIAL> {SEMICOLON} { 
+ return new Symbol(sym.SEMICOLON, yytext()); } 
+<YYINITIAL> {PLUSEQ} { 
+ return new Symbol(sym.PLUSEQ, yytext()); } 
+<YYINITIAL> {MINUSEQ} { 
+ return new Symbol(sym.MINUSEQ, yytext()); } 
+<YYINITIAL> {ASTRICKEQ} { 
+ return new Symbol(sym.ASTRICKEQ, yytext()); } 
+<YYINITIAL> {DIVEQ} { 
+ return new Symbol(sym.DIVEQ, yytext()); } 
+<YYINITIAL> {MODEQ} { 
+ return new Symbol(sym.MODEQ, yytext()); } 
+<YYINITIAL> {ANDEQ} { 
+ return new Symbol(sym.ANDEQ, yytext()); } 
+<YYINITIAL> {OREQ} { 
+ return new Symbol(sym.OREQ, yytext()); } 
+<YYINITIAL> {NOTEQ} { 
+ return new Symbol(sym.NOTEQ, yytext()); } 
+<YYINITIAL> {RSEQ} { 
+ return new Symbol(sym.RSEQ, yytext()); } 
+<YYINITIAL> {LSEQ} { 
+ return new Symbol(sym.LSEQ, yytext()); } 
+<YYINITIAL> {POWEQ} { 
+ return new Symbol(sym.POWEQ, yytext()); } 
+<YYINITIAL> {INTDIVEQ} { 
+ return new Symbol(sym.INTDIVEQ, yytext()); } 
+<YYINITIAL> {CONTINUE} { 
+ return new Symbol(sym.CONTINUE, yytext()); } 
+<YYINITIAL> {IF} { 
+ return new Symbol(sym.IF, yytext()); } 
+<YYINITIAL> {ELSE} { 
+ return new Symbol(sym.ELSE, yytext()); } 
+<YYINITIAL> {ELIF} { 
+ return new Symbol(sym.ELIF, yytext()); } 
+<YYINITIAL> {GROP} { 
+ return new Symbol(sym.GROP, yytext()); } 
+<YYINITIAL> {LESSOP} { 
+ return new Symbol(sym.LESSOP, yytext()); } 
+<YYINITIAL> {EQ} { 
+ return new Symbol(sym.EQ, yytext()); } 
+<YYINITIAL> {GREQ} { 
+ return new Symbol(sym.GREQ, yytext()); } 
+<YYINITIAL> {LESSEQ} { 
+ return new Symbol(sym.LESSEQ, yytext()); } 
+<YYINITIAL> {NOT} { 
+ return new Symbol(sym.NOT, yytext()); } 
+<YYINITIAL> {OR} { 
+ return new Symbol(sym.OR, yytext()); } 
+<YYINITIAL> {AND} { 
+ return new Symbol(sym.AND, yytext()); } 
+<YYINITIAL> {NOTEQUAL} { 
+ return new Symbol(sym.NOTEQUAL, yytext()); } 
+<YYINITIAL> {IN} { 
+ return new Symbol(sym.IN, yytext()); } 
+<YYINITIAL> {NOTIN} { 
+ return new Symbol(sym.NOTIN, yytext()); } 
+<YYINITIAL> {IS} { 
+ return new Symbol(sym.IS, yytext()); } 
+<YYINITIAL> {ISNOT} { 
+ return new Symbol(sym.ISNOT , yytext()); } 
+<YYINITIAL> {NUMBER} { 
+ return new Symbol(sym.NUMBER, yytext()); } 
+<YYINITIAL> {STRING} { 
+ return new Symbol(sym.STRING, yytext()); } 
+<YYINITIAL> {XOR} { 
+ return new Symbol(sym.XOR, yytext()); } 
+<YYINITIAL> {AMBER} { 
+ return new Symbol(sym.AMBER, yytext()); } 
+<YYINITIAL> {PLUS} { 
+ return new Symbol(sym.PLUS, yytext()); } 
+<YYINITIAL> {MINUS} { 
+ return new Symbol(sym.MINUS, yytext()); } 
+<YYINITIAL> {LOGNOT} { 
+ return new Symbol(sym.LOGNOT, yytext()); } 
+<YYINITIAL> {ASTRICK} { 
+ return new Symbol(sym.ASTRICK, yytext()); } 
+<YYINITIAL> {SLASH} { 
+ return new Symbol(sym.SLASH, yytext()); } 
+<YYINITIAL> {MOD} { 
+ return new Symbol(sym.MOD, yytext()); } 
+<YYINITIAL> {DOUBLESLASH} { 
+ return new Symbol(sym.DOUBLESLASH, yytext()); } 
+<YYINITIAL> {RS} { 
+ return new Symbol(sym.RS, yytext()); } 
+<YYINITIAL> {LS} { 
+ return new Symbol(sym.LS, yytext()); } 
+<YYINITIAL> {POW} { 
+ return new Symbol(sym.POW, yytext()); } 
+<YYINITIAL> {OCURLY} { 
+ return new Symbol(sym.OCURLY, yytext()); } 
+<YYINITIAL> {CCURLY} { 
+ return new Symbol(sym.CCURLY, yytext()); } 
+<YYINITIAL> {FOR} { 
+ return new Symbol(sym.FOR, yytext()); } 
+<YYINITIAL> {WHILE} { 
+ return new Symbol(sym.WHILE, yytext()); } 
+<YYINITIAL> {RETURN} { 
+ return new Symbol(sym.RETURN, yytext()); } 
+<YYINITIAL> {NEWLINE} { 
+ return new Symbol(sym.NEWLINE, yytext()); } 
+<YYINITIAL> {IMPORT} { 
+ return new Symbol(sym.IMPORT, yytext()); } 
+<YYINITIAL> {FROM} { 
+ return new Symbol(sym.FROM, yytext()); } 
+<YYINITIAL> {BREAK} { 
+ return new Symbol(sym.BREAK, yytext()); } 
+<YYINITIAL> {AS} { 
+ return new Symbol(sym.AS, yytext()); } 
+<YYINITIAL> {TRUE} { 
+ return new Symbol(sym.TRUE, yytext()); } 
+<YYINITIAL> {FALSE} { 
+ return new Symbol(sym.FALSE, yytext()); } 
+<YYINITIAL> {TRY} { 
+ return new Symbol(sym.TRY, yytext()); } 
+<YYINITIAL> {EXCEPT} { 
+ return new Symbol(sym.EXCEPT, yytext()); } 
+<YYINITIAL> {HASH} { 
+ return new Symbol(sym.HASH, yytext()); } 
+<YYINITIAL> {BLOCK} { 
+ return new Symbol(sym.BLOCK, yytext()); } 
+<YYINITIAL> {SINGLEQUOTE} { 
+ return new Symbol(sym.SINGLEQUOTE, yytext()); } 
+<YYINITIAL> {DOUBLEQOUTE} { 
+ return new Symbol(sym.DOUBLEQOUTE, yytext()); } 
+<YYINITIAL> {AT} { 
+ return new Symbol(sym.AT , yytext()); } 
+<YYINITIAL> {DOUBLE} { 
+ return new Symbol(sym.DOUBLE, yytext()); } 
+<YYINITIAL> {ID} { 
+ return new Symbol(sym.ID, yytext()); }  
+<YYINITIAL> . {
+  return new Symbol(sym.ERROR, "Invalid input: " + yytext() + " at line " + yyline + 1);
+}
