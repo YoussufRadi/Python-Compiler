@@ -2,7 +2,10 @@ import java_cup.runtime.*;
 import java.io.*;
 import java.util.*;
 
-
+action code {:
+  int counter = 0;
+  int lineCounter = 100;
+:}
 /* Terminals (tokens returned by the scanner). */
 terminal			DEF, COLON, OPARAN, CPARAN, EQUAL, COMMA, OSQUARE, CSQAURE, 
                     SEMICOLON, PLUSEQ, MINUSEQ, ASTRICKEQ, DIVEQ, MODEQ, ANDEQ, 
@@ -55,10 +58,10 @@ expr ::= ID:i expr_list:el {:
 
 expr_list ::= EQUAL value:e {:RESULT =   e;:};
 
-value ::= ID:i1 ASTRICK ID:i2 {:RESULT = i1 + " * " + i2;:} ;
+value ::= ID:i1 ASTRICK ID:i2 {:RESULT = i1 + " * " + i2 + "\n";:} ;
          		  
 for_stmt ::= FOR ID:i1 IN ID OPARAN NUMBER:x1 COMMA NUMBER:x2 CPARAN COLON suite:s {:
-              RESULT = "for loop " + i1 + "from" + x1 + " to " + x2 +  "\n "+s;
+              RESULT = i1 + " = " + x1 + "\n" + "if " + i1 + " > " + x2 + " jump to " + "dummy " + "\n"  + s + i1 + " = " + i1 + " + 1" + "\n" + "jump to " + "dummy 2 " + "\n"  ;
               :};
               
 suite ::=  newline:n INDENT newline:n1 statements:ss newline:n2 DEDENT 		  
